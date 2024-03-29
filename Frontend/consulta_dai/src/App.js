@@ -1,19 +1,21 @@
 import React from 'react';
 import Navbar from './components/Navbar/Navbar'; 
-import './index.css'; // Importa tus estilos globales si los tienes
-import 'tailwindcss/tailwind.css'; // Importa Tailwind CSS
+import Login from './components/login';
+import { ChakraProvider } from '@chakra-ui/react'
 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Navbar />
-      </header>
-    </div>
+<ChakraProvider>
+      <div className="App">
+        <header className="App-header">
+          <Navbar />
+        </header>
+      <Login />
+      </div>
+
+</ChakraProvider>
   );
 }
 
 export default App;
-
-
