@@ -5,7 +5,7 @@ from flask_bcrypt import generate_password_hash
 
 usuarios_bp = Blueprint('usuario', __name__)
 
-#POST PARA CREAR USUARIO CON LA PASSWORD ENCRIPTADA
+#POST PARA CREAR CLIENTE CON LA PASSWORD ENCRIPTADA
 @usuarios_bp.route('/usuarios/clientes', methods=['POST'])
 def register():
     try:
@@ -41,7 +41,7 @@ def register():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-#GET PARA OBTENER USUARIOS (LISTA)
+#GET PARA OBTENER CLIENTE (LISTA)
 @usuarios_bp.route('/usuarios/get_clientes', methods = ['GET'])
 def get_users():
     conn = connect()
@@ -65,6 +65,29 @@ def get_users():
         }
         usuarios_list.append(usuario_dict)
     return jsonify(usuarios_list)
+
+@usuarios_bp.route('/usuarios/update_cliente/<int:usuario_id>', methods=['PUT'])
+def update_usuario(usuario_id):
+    try:
+        data = request.json
+        print(data)  # Imprimir los datos recibidos
+        print(usuario_id)  # Imprimir el ID de usuario recibido
+        user_name = data['user_name']
+        password = data['password']
+        first_name = data['first_name']
+        last_name = data['last_name']
+        email = data['email']
+        phone = data['phone']
+        birth_date = data['birth_date']
+        address = data['address']
         
+        conn = connect()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE public.cliente SET user_name=%s, password=%s, first_name=%s, last_name=%s, mail=%s, address=%s, phone=%s, birth_date=%s WHERE id=%s", (user_name, password, first_name, last_name, email, address, phone, birth_date, usuario_id))
         
+        conn.commit()
+        conn.close()
         
+        return jsonify({'message': 'Usuario actualizado correctamente'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
