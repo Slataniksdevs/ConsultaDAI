@@ -42,26 +42,26 @@ def register():
         return jsonify({'error': str(e)}), 500
 
 #GET PARA OBTENER USUARIOS (LISTA)
-@usuarios_bp.route('/usuarios/get_user', methods = ['GET'])
+@usuarios_bp.route('/usuarios/get_clientes', methods = ['GET'])
 def get_users():
     conn = connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM public.users;")
+    cursor.execute("SELECT * FROM public.cliente;")
     usuarios_data = cursor.fetchall()
     cursor.close()
     usuarios_list = []
     for usuario in usuarios_data:
         usuario_dict =  {
             'id': usuario[0],
-            'username': usuario[1],
-            'email' : usuario[2],
-            'password': usuario[3],
-            'first_name': usuario [4],
-            'last_name': usuario[5],
+            'user_name': usuario[1],
+            'password' : usuario[2],
+            'first_name': usuario[3],
+            'last_name': usuario [4],
+            'email': usuario[5],
             'phone': usuario[6],
-            'birthdate': usuario[7],
-            'gender': usuario[8],
-            'country': usuario[9]
+            'birth_date': usuario[7],
+            'address': usuario[8],
+            
         }
         usuarios_list.append(usuario_dict)
     return jsonify(usuarios_list)
