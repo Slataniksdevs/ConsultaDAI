@@ -19,10 +19,11 @@ function Login() {
       justify="center"
       minHeight="100vh"
       bgGradient="linear(to-r, teal.500, cyan.500)"
-      px="4"
+      px={{ base: '4', md: '20' }} // Ajustar el padding en diferentes tamaños de pantalla
     >
       <Box
         maxW="md"
+        w="full" // Ocupar todo el ancho del contenedor
         bg="white"
         py="8"
         px="10"
