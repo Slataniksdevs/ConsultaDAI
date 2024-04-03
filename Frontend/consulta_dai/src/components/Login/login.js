@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Flex, Heading, Input, Button, Link, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import { Box, Flex, Heading, Input, Button, Link, Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import Registro from './registro'; // Importa el componente de registro
 
 function Login() {
@@ -19,11 +19,11 @@ function Login() {
       justify="center"
       minHeight="100vh"
       bgGradient="linear(to-r, teal.500, cyan.500)"
-      px={{ base: '4', md: '20' }} // Ajustar el padding en diferentes tamaños de pantalla
+      px={{ base: '10', md: '20' }} // Ajustar el padding en diferentes tamaños de pantalla
     >
       <Box
         maxW="md"
-        w="full" // Ocupar todo el ancho del contenedor
+        w="full" 
         bg="white"
         py="8"
         px="10"
@@ -70,7 +70,6 @@ function Login() {
         <Modal isOpen={isOpen} onClose={handleCloseModal}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Registro</ModalHeader>
             <ModalBody>
               <Registro /> {/* Muestra el componente de registro dentro del modal */}
             </ModalBody>

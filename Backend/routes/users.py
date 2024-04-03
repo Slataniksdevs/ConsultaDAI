@@ -91,3 +91,18 @@ def update_usuario(usuario_id):
         return jsonify({'message': 'Usuario actualizado correctamente'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+
+    
+@usuarios_bp.route('/usuarios/delete_user/<int:usuario_id>', methods=['DELETE'])
+def delete_user(usuario_id):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM public.cliente WHERE id=%s", (usuario_id,))
+        conn.commit()
+        conn.close()
+        return jsonify({'message': 'Usuario borrado exitosamente'}),200
+    except Exception as e:
+        return jsonify ({'error': str(e)}),500
