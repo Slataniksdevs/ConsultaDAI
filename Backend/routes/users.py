@@ -112,32 +112,30 @@ def delete_user(usuario_id):
 
 #GET USER_PASS PARA LOGIN 
 
-import hashlib
+
+
 
 @usuarios_bp.route('/usuarios/login', methods=['POST'])
 def login():
     try:
         # Obtener los datos del formulario de inicio de sesión enviado por el cliente
         user_name = request.json.get('user_name')
-        password = request.json.get('password')
+        password_plain = request.json.get('password')  # Contraseña en texto plano
 
         # Consultar la base de datos para obtener la contraseña encriptada del usuario
         conn = connect()
         cursor = conn.cursor()
         cursor.execute("SELECT password FROM public.user_login WHERE user_name = %s;", (user_name,))
-        stored_password_hash = cursor.fetchone()
+        stored_password_hex = cursor.fetchone()  # Contraseña en formato hexadecimal
         cursor.close()
 
         # Verificar si se encontró la contraseña en la base de datos
-        if stored_password_hash:
-            # Obtener el hash almacenado de la base de datos
-            stored_password_hash = stored_password_hash[0]
+        if stored_password_hex:
+            # Decodificar la contraseña almacenada de su formato hexadecimal a una cadena de bytes
+            stored_password_bytes = bytes.fromhex(stored_password_hex[0][2:])  # Ignorar el prefijo \x24 al inicio
 
-            # Hashear la contraseña ingresada por el usuario
-            password_hash = bcrypt.hashpw(password.encode(), stored_password_hash.encode())
-
-            # Comparar los hashes
-            if password_hash == stored_password_hash:
+            # Comparar la contraseña ingresada por el usuario con la contraseña almacenada
+            if bcrypt.checkpw(password_plain.encode(), stored_password_bytes):
                 return jsonify({'message': 'Inicio de sesión exitoso'})
             else:
                 return jsonify({'error': 'Credenciales incorrectas'}), 401
