@@ -110,10 +110,7 @@ def delete_user(usuario_id):
         return jsonify ({'error': str(e)}),500
     
 
-#GET USER_PASS PARA LOGIN 
-
-
-
+#POST USER_PASS PARA LOGIN 
 
 @usuarios_bp.route('/usuarios/login', methods=['POST'])
 def login():
