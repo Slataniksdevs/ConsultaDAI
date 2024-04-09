@@ -4,7 +4,7 @@ const BASE_URL = 'http://127.0.0.1:5000';
 const userApi = {
     login: async (user_name, password) => {
       try {
-        const response = await axios.post(`${BASE_URL}/usuarios/login`, {
+        const response = await axios.post(`${BASE_URL}/login/inicio`, {
           user_name: user_name,
           password: password
         });

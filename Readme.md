@@ -12,6 +12,8 @@
 <p>3.  pip install -r requirements.txt</p>
 
 
+pip freeze > requirements.txt
+
 ![alt text](image.png)
 
 
