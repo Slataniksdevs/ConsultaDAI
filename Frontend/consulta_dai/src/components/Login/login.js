@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Flex, Heading, Input, Button, Link, Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate desde react-router-dom en lugar de useHistory
 import Registro from './registro'; 
 import userApi from '../../api/userApi';
 
@@ -8,6 +9,7 @@ function Login() {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Inicializa useNavigate en lugar de useHistory
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -25,8 +27,10 @@ function Login() {
     }
 
     try {
+      // Realizar la lógica de inicio de sesión
       const response = await userApi.login(user_name, password);
       console.log(response); // Hacer algo con la respuesta, como redirigir a otra página
+      navigate('/dashboard'); // Utiliza navigate para redirigir al usuario al dashboard después de iniciar sesión correctamente
     } catch (error) {
       setError('Error al iniciar sesión. Por favor intenta nuevamente.');
     }

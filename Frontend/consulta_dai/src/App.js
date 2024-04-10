@@ -1,30 +1,35 @@
-import React from 'react';
-import Navbar from './components/Navbar/Navbar'; 
-import Footer from './components/Footer/Footer';
+import React, { useState } from 'react';
+import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar/navbar'; 
+import Footer from './components/Footer/footer';
 import Login from './components/Login/login';
-import Registro from './components/Login/registro'; 
-import { ChakraProvider } from '@chakra-ui/react'
-
+import Dashboard from './components/Dashboard/dashboard'; 
+import { ChakraProvider } from '@chakra-ui/react';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
-<ChakraProvider>
-      <div className="App">
-        <header className="App-header">
-          <Navbar />
-        </header>
-        <div className='Login'>
-      <Login />
-      </div>
-      </div>
-
-
-<div className='App' >
-<footer className='App-Footer'>
-  <Footer  />
-</footer>
-</div>
-</ChakraProvider>
+    <ChakraProvider>
+      <Router>
+        <div className="App">
+          <header className="App-header">
+            <Navbar />
+          </header>
+          <Routes>
+            <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+            <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
+          </Routes>
+          <footer className='App-Footer'>
+            <Footer />
+          </footer>
+        </div>
+      </Router>
+    </ChakraProvider>
   );
 }
 
