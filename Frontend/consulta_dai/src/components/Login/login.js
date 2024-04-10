@@ -53,7 +53,7 @@ function Login() {
         borderRadius="lg"
         boxShadow="lg"
       >
-        <Heading mb="8" textAlign="center" fontFamily="serif" fontWeight="bold">
+        <Heading mb="8" textAlign="center" fontFamily="Roboto" fontWeight="bold">
           Iniciar sesión
         </Heading>
         <Input
