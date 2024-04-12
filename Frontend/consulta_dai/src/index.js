@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Dashboard from './components/Dashboard/dashboard';
+import Login from './components/Login/login';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

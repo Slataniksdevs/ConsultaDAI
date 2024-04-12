@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar/navbar'; 
-import Footer from './components/Footer/footer';
+import Navbar from './components/Navbar/Navbar'; 
+import Footer from './components/Footer/Footer';
 import Login from './components/Login/login';
 import Dashboard from './components/Dashboard/dashboard'; 
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, Box, Heading, Text, Flex, Stat, StatLabel, StatNumber  } from '@chakra-ui/react';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,6 +24,7 @@ function App() {
             <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
             <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/dashboard" />} />
           </Routes>
+<<<<<<< HEAD
           <div>
           <Dashboard  />
         </div>
@@ -32,6 +33,22 @@ function App() {
           </footer>
         </div>
         
+=======
+          <br>
+          </br>
+
+          <div>
+            <Dashboard />
+            </div>
+
+          <br>
+          </br>        
+          <footer className='App-Footer'>                   
+            <Footer />
+          </footer>
+        
+        </div>       
+>>>>>>> 4be0991c2eeef4437778b2954c1527f92b5227ab
       </Router>
     </ChakraProvider>
   );
