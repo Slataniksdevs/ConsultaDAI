@@ -12,6 +12,9 @@ function App() {
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
+  const imprime = () => {
+    console.log("Elemento de muestra para mover los datos entre componentes")
+  }
 
   return (
     <ChakraProvider>
@@ -21,22 +24,12 @@ function App() {
             <Navbar />
           </header>
           <Routes>
-            <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-            <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
+            <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess}  numerodelasuerte={imprime} />} />
+            <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
           </Routes>
-          <br>
-          </br>
-
-          <div>
-            <Dashboard />
-            </div>
-
-          <br>
-          </br>        
           <footer className='App-Footer'>                   
             <Footer />
           </footer>
-        
         </div>       
       </Router>
     </ChakraProvider>

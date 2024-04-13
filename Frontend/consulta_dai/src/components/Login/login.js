@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Flex, Heading, Input, Button, Link, Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom'; 
 import Registro from './registro'; 
 import userApi from '../../api/userApi';
 
-function Login() {
+function Login({ onLoginSuccess, numerodelasuerte  }) {
   const [isOpen, setIsOpen] = useState(false);
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Nuevo estado para controlar si el usuario ha iniciado sesión
   const navigate = useNavigate(); 
-
-  useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        setIsOpen(false);
-        navigate('/dashboard'); // Redirigir al usuario al dashboard después de dos segundos
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, navigate]);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -42,12 +30,16 @@ function Login() {
       // Realizar la lógica de inicio de sesión
       const response = await userApi.login(user_name, password);
       console.log(response); // Hacer algo con la respuesta, como redirigir a otra página
-      setIsLoggedIn(true); // Marcar al usuario como autenticado
       setUserName(''); // Limpiar el campo de nombre de usuario
       setPassword(''); // Limpiar el campo de contraseña
       setIsOpen(true); // Abrir el modal de bienvenida
+      setTimeout(() => {
+        setIsOpen(false);
+        onLoginSuccess(); // Llamar a onLoginSuccess para marcar al usuario como autenticado
+        navigate('/dashboard'); // Redirigir al usuario al dashboard después de dos segundos
+      }, 2000);
     } catch (error) {
-      setError('Error al iniciar sesión. Por favor intenta nuevamente.');
+      setError(error);
     }
   };
 
@@ -71,6 +63,7 @@ function Login() {
         <Heading mb="8" textAlign="center" fontFamily="serif" fontWeight="bold">
           Iniciar sesión
         </Heading>
+        <center>{error && <p>{error}</p>}</center> 
         <Input
           placeholder="Nombre Usuario"
           variant="filled"
@@ -97,11 +90,21 @@ function Login() {
           mb="4"
           _hover={{ bg: 'teal.600' }}
           onClick={handleSubmit}
-
-          
         >
           Iniciar sesión
         </Button>
+
+        <Button
+          colorScheme="teal"
+          variant="solid"
+          width="full"
+          mb="4"
+          _hover={{ bg: 'teal.600' }}
+          onClick={numerodelasuerte}
+        >
+          apretame!
+        </Button>
+
         <Link
           color="teal.500"
           fontWeight="bold"
@@ -121,7 +124,6 @@ function Login() {
             <ModalCloseButton />
           </ModalContent>
         </Modal>
-        {error && <p>{error}</p>}
       </Box>
     </Flex>
   );
