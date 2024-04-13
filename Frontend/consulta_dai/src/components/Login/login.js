@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Registro from './registro'; 
 import userApi from '../../api/userApi';
 
-function Login({ onLoginSuccess, numerodelasuerte  }) {
+function Login({ onLoginSuccess }) {
   const [isOpen, setIsOpen] = useState(false);
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -93,18 +93,6 @@ function Login({ onLoginSuccess, numerodelasuerte  }) {
         >
           Iniciar sesión
         </Button>
-
-        <Button
-          colorScheme="teal"
-          variant="solid"
-          width="full"
-          mb="4"
-          _hover={{ bg: 'teal.600' }}
-          onClick={numerodelasuerte}
-        >
-          apretame!
-        </Button>
-
         <Link
           color="teal.500"
           fontWeight="bold"
