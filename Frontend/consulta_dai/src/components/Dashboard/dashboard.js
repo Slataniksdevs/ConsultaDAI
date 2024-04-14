@@ -2,14 +2,14 @@ import React from "react";
 import {
   Box,
   Flex,
-  Spacer,
   VStack,
+  Spacer,
   StackDivider,
   Icon,
   Text,
   ChakraProvider
 } from "@chakra-ui/react";
-import { CalendarIcon, EmailIcon, SettingsIcon } from "@chakra-ui/icons";
+import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon } from "@chakra-ui/icons";
 
 function Sidebar() {
   return (
@@ -39,13 +39,17 @@ function Sidebar() {
           <Icon as={EmailIcon} color="white" mr="2" />
           <Text color="white">Correo</Text>
         </Flex>
-        <Flex align="center" cursor="pointer">
+        <Flex align="center" cursor="pointer" mb="2">
           <Icon as={SettingsIcon} color="white" mr="2" />
           <Text color="white">Configuración</Text>
         </Flex>
+        <Flex align="center" cursor="pointer" mb="2">
+          <Icon as={EditIcon} color="white" mr="2" />
+          <Text color="white">Administrador</Text>
+        </Flex>
       </Box>
       <Spacer />
-      <Box>
+      <Box mb="4"> {/* Agregar un margen en la parte inferior del último elemento */}
         <Text color="white">&copy; 2024 Company</Text>
       </Box>
     </VStack>

@@ -29,7 +29,8 @@ function Login() {
 
     try {
       const response = await userApi.login(user_name, password);
-      console.log(response);
+      const { token } = response; // Extraer el token JWT de la respuesta
+      localStorage.setItem('token', token); // Almacenar el token en el almacenamiento local del navegador
       setUserName('');
       setPassword('');
       setIsOpen(true); // Mostrar el modal después del inicio de sesión exitoso

@@ -34,13 +34,16 @@ def login():
 
             # Comparar la contraseña ingresada por el usuario con la contraseña almacenada
             if bcrypt.checkpw(password_plain.encode(), stored_password_bytes):
-                token = jwt.encode({'user_name': user_name}, SECRET_KEY, algorithm = 'HS256')
-                print("Token generado:", token)
-                return jsonify({'message': 'Inicio de sesión exitoso'})
+                # Generar un token JWT válido
+                token = jwt.encode({'user_name': user_name}, SECRET_KEY, algorithm='HS256')
+                # Devolver el token JWT al cliente
+                return jsonify({'token': token}), 200
             else:
                 return jsonify({'error': 'Credenciales incorrectas'}), 401
         else:
             return jsonify({'error': 'Usuario no encontrado'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
 
