@@ -11,6 +11,9 @@
 #Instalar las dependencias  y librerias que usa el backend
 <p>3.  pip install -r requirements.txt</p>
 
+#CHAKRA ICONS UI
+npm install @chakra-ui/icons
+
 
 pip freeze > requirements.txt
 
