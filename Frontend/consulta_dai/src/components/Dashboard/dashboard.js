@@ -10,6 +10,30 @@ import {
   ChakraProvider
 } from "@chakra-ui/react";
 import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon } from "@chakra-ui/icons";
+import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+
+// Importamos los estilos CSS necesarios para BigCalendar
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+const localizer = momentLocalizer(moment);
+
+
+
+const myEventsList = [
+  {
+    id: 0,
+    title: 'Evento 1',
+    start: new Date(2024, 3, 1),
+    end: new Date(2024, 3, 2),
+  },
+  {
+    id: 1,
+    title: 'Evento 2',
+    start: new Date(2024, 3, 3),
+    end: new Date(2024, 3, 4),
+  },
+];
 
 function Sidebar() {
   return (
@@ -60,9 +84,28 @@ function Calendar() {
   return (
     <Box flex="1" p="4">
       <Text fontSize="xl" mb="4">
-        Calendario
+        Reserva de Horas
       </Text>
-      {/* Aquí puedes agregar tu componente de calendario */}
+      
+      <div>
+        <BigCalendar
+          localizer={localizer}
+          events={myEventsList}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+          messages={{
+            next: "Siguiente",
+            previous: "Anterior",
+            today: "Hoy",
+            month: "Mes",
+            week: "Semana",
+            day: "Día",
+                }}
+        />
+      </div>
+     
+
     </Box>
   );
 }
