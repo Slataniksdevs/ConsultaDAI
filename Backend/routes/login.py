@@ -18,12 +18,13 @@ def login():
     try:
         # Obtener los datos del formulario de inicio de sesión enviado por el cliente
         user_name = request.json.get('user_name')
-        password_plain = request.json.get('password')  # Contraseña en texto plano
+        password_plain = request.json.get('password') 
+        rol = request.json.get('rol')
 
         # Consultar la base de datos para obtener la contraseña encriptada del usuario
         conn = connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT password FROM public.user_login WHERE user_name = %s;", (user_name,))
+        cursor.execute("SELECT password,rol FROM public.user_login WHERE user_name = %s;", (user_name,))
         stored_password_hex = cursor.fetchone()  # Contraseña en formato hexadecimal
         cursor.close()
 
@@ -36,8 +37,9 @@ def login():
             if bcrypt.checkpw(password_plain.encode(), stored_password_bytes):
                 # Generar un token JWT válido
                 token = jwt.encode({'user_name': user_name}, SECRET_KEY, algorithm='HS256')
+                rol  = rol
                 # Devolver el token JWT al cliente
-                return jsonify({'token': token}), 200
+                return jsonify({'token': token,'rol': rol}), 200
             else:
                 return jsonify({'error': 'Credenciales incorrectas'}), 401
         else:

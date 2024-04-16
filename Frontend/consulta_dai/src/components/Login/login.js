@@ -1,24 +1,13 @@
-// Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Heading, Input, Button, Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Text } from '@chakra-ui/react';
+import { Box, Heading, Input, Button } from '@chakra-ui/react';
 import userApi from '../../api/userApi';
 
 function Login() {
-  const [isOpen, setIsOpen] = useState(false);
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  const handleOpenModal = () => {
-    setIsOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpen(false);
-    navigate('/dashboard'); // Redirigir al dashboard después de cerrar el modal
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,11 +18,27 @@ function Login() {
 
     try {
       const response = await userApi.login(user_name, password);
-      const { token } = response; // Extraer el token JWT de la respuesta
-      localStorage.setItem('token', token); // Almacenar el token en el almacenamiento local del navegador
-      setUserName('');
-      setPassword('');
-      setIsOpen(true); // Mostrar el modal después del inicio de sesión exitoso
+      const { token, rol } = response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('rol', rol);
+
+      // Redirigir a diferentes rutas según el rol del usuario
+      switch (rol) {
+        case 1:
+          navigate('/dashboard-admin');
+          break;
+        case 2:
+          navigate('/dashboard-soporte');
+          break;
+        case 3:
+          navigate('/dashboard-paciente');
+          break;
+        case 4:
+          navigate('/dashboard-profesional');
+          break;
+        default:
+          navigate('/dashboard');
+      }
     } catch (error) {
       setError('Error al iniciar sesión. Por favor intenta nuevamente.');
     }
@@ -90,16 +95,6 @@ function Login() {
         </Button>
         {error && <p>{error}</p>}
       </Box>
-      <Modal isOpen={isOpen} onClose={handleCloseModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody>
-            <Text mb="4">¡Bienvenido!</Text>
-            <Text>AHORA PASA AL DASHBOARD.</Text>
-          </ModalBody>
-          <ModalCloseButton />
-        </ModalContent>
-      </Modal>
     </Box>
   );
 }

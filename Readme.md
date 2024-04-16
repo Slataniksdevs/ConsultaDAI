@@ -197,3 +197,12 @@ CREATE TRIGGER cliente_insert_trigger
 AFTER INSERT ON cliente
 FOR EACH ROW
 EXECUTE FUNCTION insert_user_login();
+
+
+###
+ROLES
+INSERT INTO public.rol (id, nombre) VALUES
+(1, 'Administrador'),
+(2, 'Soporte'),
+(3, 'Paciente'),
+(4, 'Profesional');###

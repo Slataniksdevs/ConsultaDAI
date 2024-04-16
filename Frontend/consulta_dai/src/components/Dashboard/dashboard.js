@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -18,8 +18,6 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
-
-
 const myEventsList = [
   {
     id: 0,
@@ -35,7 +33,7 @@ const myEventsList = [
   },
 ];
 
-function Sidebar() {
+function Sidebar({ rol }) {
   return (
     <VStack
       bg="gray.800"
@@ -67,10 +65,13 @@ function Sidebar() {
           <Icon as={SettingsIcon} color="white" mr="2" />
           <Text color="white">Configuración</Text>
         </Flex>
-        <Flex align="center" cursor="pointer" mb="2">
-          <Icon as={EditIcon} color="white" mr="2" />
-          <Text color="white">Administrador</Text>
-        </Flex>
+        {/* Mostrar el enlace solo si el rol es 'admin' (1) */}
+        {rol === '1' && (
+          <Flex align="center" cursor="pointer" mb="2">
+            <Icon as={EditIcon} color="white" mr="2" />
+            <Text color="white">Administrador</Text>
+          </Flex>
+        )}
       </Box>
       <Spacer />
       <Box mb="4"> {/* Agregar un margen en la parte inferior del último elemento */}
@@ -100,21 +101,27 @@ function Calendar() {
             today: "Hoy",
             month: "Mes",
             week: "Semana",
-            day: "Día",
-                }}
+            day: "Día",
+          }}
         />
       </div>
-     
-
     </Box>
   );
 }
 
 function Dashboard() {
+  const [rol, setRol] = useState(null);
+
+  useEffect(() => {
+    // Obtener el rol del almacenamiento local
+    const userRol = localStorage.getItem('rol');
+    setRol(userRol);
+  }, []);
+
   return (
     <ChakraProvider>
       <Flex>
-        <Sidebar />
+        <Sidebar rol={rol} />
         <Calendar />
       </Flex>
     </ChakraProvider>
