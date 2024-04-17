@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Registro from './registro'; 
 import userApi from '../../api/userApi';
 
-function Login() {
+function Login( onLoginSuccess ) {
   const [isOpen, setIsOpen] = useState(false);
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');

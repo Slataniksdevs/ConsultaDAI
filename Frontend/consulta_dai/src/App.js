@@ -24,7 +24,6 @@ function App() {
             <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
             <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/dashboard" />} />
           </Routes>
-<<<<<<< HEAD
           <div>
           <Dashboard  />
         </div>
@@ -33,22 +32,6 @@ function App() {
           </footer>
         </div>
         
-=======
-          <br>
-          </br>
-
-          <div>
-            <Dashboard />
-            </div>
-
-          <br>
-          </br>        
-          <footer className='App-Footer'>                   
-            <Footer />
-          </footer>
-        
-        </div>       
->>>>>>> 4be0991c2eeef4437778b2954c1527f92b5227ab
       </Router>
     </ChakraProvider>
   );
