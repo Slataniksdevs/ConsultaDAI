@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\Slatanik\Desktop\ConsultaDai\ConsultaDAI\Backend\venv
+set VIRTUAL_ENV=C:\Users\Paulo Ramirez\Documents\Paulo Ramirez 2024\Paulo_Ramirez\Workspace\Proyecto_DAI\ConsultaDAI\Backend\venv
 
 if not defined PROMPT set PROMPT=$P$G
 

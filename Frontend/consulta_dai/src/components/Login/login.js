@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Flex, Heading, Input, Button, Link, Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Text } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom'; 
-import Registro from './registro'; 
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Heading, Input, Button } from '@chakra-ui/react';
 import userApi from '../../api/userApi';
 
 function Login( onLoginSuccess ) {
@@ -9,27 +8,7 @@ function Login( onLoginSuccess ) {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Nuevo estado para controlar si el usuario ha iniciado sesión
-  const navigate = useNavigate(); 
-
-  useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        setIsOpen(false);
-        navigate('/dashboard'); // Redirigir al usuario al dashboard después de dos segundos
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, navigate]);
-
-  const handleOpenModal = () => {
-    setIsOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpen(false);
-  };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,27 +16,42 @@ function Login( onLoginSuccess ) {
       setError('Por favor ingresa un nombre de usuario y contraseña.');
       return;
     }
-  
+
     try {
-      // Realizar la lógica de inicio de sesión
       const response = await userApi.login(user_name, password);
-      console.log(response); // Hacer algo con la respuesta, como redirigir a otra página
-      setIsLoggedIn(true); // Marcar al usuario como autenticado
-      setUserName(''); // Limpiar el campo de nombre de usuario
-      setPassword(''); // Limpiar el campo de contraseña
-      setIsOpen(true); // Abrir el modal de bienvenida
+      const { token, rol } = response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('rol', rol);
+
+      // Redirigir a diferentes rutas según el rol del usuario
+      switch (rol) {
+        case 1:
+          navigate('/dashboard-admin');
+          break;
+        case 2:
+          navigate('/dashboard-soporte');
+          break;
+        case 3:
+          navigate('/dashboard-paciente');
+          break;
+        case 4:
+          navigate('/dashboard-profesional');
+          break;
+        default:
+          navigate('/dashboard');
+      }
     } catch (error) {
       setError('Error al iniciar sesión. Por favor intenta nuevamente.');
     }
   };
 
   return (
-    <Flex
-      align="center"
-      justify="center"
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
       minHeight="100vh"
-      bgGradient="linear(to-r, teal.500, cyan.500)"
-      px={{ base: '10', md: '20' }} 
     >
       <Box
         maxW="md"
@@ -97,33 +91,12 @@ function Login( onLoginSuccess ) {
           mb="4"
           _hover={{ bg: 'teal.600' }}
           onClick={handleSubmit}
-
-          
         >
           Iniciar sesión
         </Button>
-        <Link
-          color="teal.500"
-          fontWeight="bold"
-          textAlign="center"
-          display="block"
-          onClick={handleOpenModal}
-        >
-          ¿No tienes una cuenta? ¡Regístrate aquí!
-        </Link>
-        <Modal isOpen={isOpen} onClose={handleCloseModal}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalBody>
-              <Text mb="4">¡Bienvenido!</Text>
-              <Text>AHORA PASA AL DASHBOARD (NO SE RENDERIZA EL COMPONENTEN).</Text>
-            </ModalBody>
-            <ModalCloseButton />
-          </ModalContent>
-        </Modal>
         {error && <p>{error}</p>}
       </Box>
-    </Flex>
+    </Box>
   );
 }
 
