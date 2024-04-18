@@ -12,7 +12,8 @@ import {
 import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon } from "@chakra-ui/icons";
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import 'moment/locale/es'; // Importar el locale de español para moment.js
+
+// Importamos los estilos CSS necesarios para BigCalendar
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
@@ -95,18 +96,12 @@ function Calendar() {
           endAccessor="end"
           style={{ height: 500 }}
           messages={{
-            allDay: "Todo el día",
-            previous: "Anterior",
             next: "Siguiente",
+            previous: "Anterior",
             today: "Hoy",
             month: "Mes",
             week: "Semana",
             day: "Día",
-            agenda: "Agenda",
-            date: "Fecha",
-            time: "Hora",
-            event: "Evento",
-            noEventsInRange: "Sin eventos"
           }}
         />
       </div>
@@ -121,11 +116,6 @@ function Dashboard() {
     // Obtener el rol del almacenamiento local
     const userRol = localStorage.getItem('rol');
     setRol(userRol);
-  }, []);
-
-  // Configuración inicial para establecer moment en español
-  useEffect(() => {
-    moment.locale('es');
   }, []);
 
   return (

@@ -20,6 +20,7 @@ def login():
         user_name = request.json.get('user_name')
         password_plain = request.json.get('password') 
         rol = request.json.get('rol')
+        print("Valor de rol obtenido:", rol)
 
         # Consultar la base de datos para obtener la contraseña encriptada del usuario
         conn = connect()
@@ -39,7 +40,8 @@ def login():
                 token = jwt.encode({'user_name': user_name}, SECRET_KEY, algorithm='HS256')
                 rol  = rol
                 # Devolver el token JWT al cliente
-                return jsonify({'token': token,'rol': rol}), 200
+                return jsonify({'token': token}), 200
+
             else:
                 return jsonify({'error': 'Credenciales incorrectas'}), 401
         else:
