@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { Box, Flex, Heading, Input, Button, Link, Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom'; 
 import Registro from './registro'; 
@@ -18,6 +19,17 @@ function Login({ onLoginSuccess }) {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
+=======
+import { useNavigate } from 'react-router-dom';
+import { Box, Heading, Input, Button } from '@chakra-ui/react';
+import userApi from '../../api/userApi';
+
+function Login() {
+  const [user_name, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+>>>>>>> 33b0be357f7bee17e169f16183ae54c111559252
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,10 +37,10 @@ function Login({ onLoginSuccess }) {
       setError('Por favor ingresa un nombre de usuario y contraseña.');
       return;
     }
-  
+
     try {
-      // Realizar la lógica de inicio de sesión
       const response = await userApi.login(user_name, password);
+<<<<<<< HEAD
       console.log(response); // Hacer algo con la respuesta, como redirigir a otra página
       setUserName(''); // Limpiar el campo de nombre de usuario
       setPassword(''); // Limpiar el campo de contraseña
@@ -38,18 +50,41 @@ function Login({ onLoginSuccess }) {
         onLoginSuccess(); // Llamar a onLoginSuccess para marcar al usuario como autenticado
         navigate('/dashboard'); // Redirigir al usuario al dashboard después de dos segundos
       }, 2000);
+=======
+      const { token, rol } = response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('rol', rol);
+
+      // Redirigir a diferentes rutas según el rol del usuario
+      switch (rol) {
+        case 1:
+          navigate('/dashboard-admin');
+          break;
+        case 2:
+          navigate('/dashboard-soporte');
+          break;
+        case 3:
+          navigate('/dashboard-paciente');
+          break;
+        case 4:
+          navigate('/dashboard-profesional');
+          break;
+        default:
+          navigate('/dashboard');
+      }
+>>>>>>> 33b0be357f7bee17e169f16183ae54c111559252
     } catch (error) {
       setError(error);
     }
   };
 
   return (
-    <Flex
-      align="center"
-      justify="center"
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
       minHeight="100vh"
-      bgGradient="linear(to-r, teal.500, cyan.500)"
-      px={{ base: '10', md: '20' }} 
     >
       <Box
         maxW="md"
@@ -93,6 +128,7 @@ function Login({ onLoginSuccess }) {
         >
           Iniciar sesión
         </Button>
+<<<<<<< HEAD
         <Link
           color="teal.500"
           fontWeight="bold"
@@ -112,8 +148,11 @@ function Login({ onLoginSuccess }) {
             <ModalCloseButton />
           </ModalContent>
         </Modal>
+=======
+        {error && <p>{error}</p>}
+>>>>>>> 33b0be357f7bee17e169f16183ae54c111559252
       </Box>
-    </Flex>
+    </Box>
   );
 }
 

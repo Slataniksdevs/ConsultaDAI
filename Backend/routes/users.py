@@ -20,6 +20,7 @@ def register():
         phone = data['phone']
         birth_date = data['birth_date']
         address = data['address']
+        tipo_usuario = data['tipo_usuario']
 
         #encriptar la password
         hashed_password = generate_password_hash(password)
@@ -29,12 +30,12 @@ def register():
         cursor.execute("""
             INSERT INTO public.cliente(
                 user_name, password, first_name, last_name, mail, address,
-                phone, birth_date
+                phone, birth_date,tipo_usuario
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)
         """, 
         (user_name, hashed_password, first_name, last_name, email, address,
-         phone, birth_date)
+         phone, birth_date, tipo_usuario)
         )
         conn.commit()
         conn.close()
@@ -60,9 +61,9 @@ def get_users():
             'first_name': usuario[3],
             'last_name': usuario [4],
             'email': usuario[5],
-            'phone': usuario[6],
-            'birth_date': usuario[7],
-            'address': usuario[8],
+            'adress': usuario[6],
+            'phone': usuario[7],
+            'birth_day': usuario[8],
             
         }
         usuarios_list.append(usuario_dict)
@@ -81,11 +82,12 @@ def update_usuario(usuario_id):
         email = data['email']
         phone = data['phone']
         birth_date = data['birth_date']
-        address = data['address']
+        address = data['address'],
+        tipo_usuario = data['tipo_usuario']
         
         conn = connect()
         cursor = conn.cursor()
-        cursor.execute("UPDATE public.cliente SET user_name=%s, password=%s, first_name=%s, last_name=%s, mail=%s, address=%s, phone=%s, birth_date=%s WHERE id=%s", (user_name, password, first_name, last_name, email, address, phone, birth_date, usuario_id))
+        cursor.execute("UPDATE public.cliente SET user_name=%s, password=%s, first_name=%s, last_name=%s, mail=%s, address=%s, phone=%s, birth_date=%s, tipo_usuario=%s WHERE id=%s", (user_name, password, first_name, last_name, email, address, phone, birth_date,tipo_usuario, usuario_id))
         
         conn.commit()
         conn.close()
@@ -109,35 +111,4 @@ def delete_user(usuario_id):
     except Exception as e:
         return jsonify ({'error': str(e)}),500
     
-
-#POST USER_PASS PARA LOGIN 
-
-@usuarios_bp.route('/usuarios/login', methods=['POST'])
-def login():
-    try:
-        # Obtener los datos del formulario de inicio de sesión enviado por el cliente
-        user_name = request.json.get('user_name')
-        password_plain = request.json.get('password')  # Contraseña en texto plano
-
-        # Consultar la base de datos para obtener la contraseña encriptada del usuario
-        conn = connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT password FROM public.user_login WHERE user_name = %s;", (user_name,))
-        stored_password_hex = cursor.fetchone()  # Contraseña en formato hexadecimal
-        cursor.close()
-
-        # Verificar si se encontró la contraseña en la base de datos
-        if stored_password_hex:
-            # Decodificar la contraseña almacenada de su formato hexadecimal a una cadena de bytes
-            stored_password_bytes = bytes.fromhex(stored_password_hex[0][2:])  # Ignorar el prefijo \x24 al inicio
-
-            # Comparar la contraseña ingresada por el usuario con la contraseña almacenada
-            if bcrypt.checkpw(password_plain.encode(), stored_password_bytes):
-                return jsonify({'message': 'Inicio de sesión exitoso'})
-            else:
-                return jsonify({'error': 'Credenciales incorrectas'}), 401
-        else:
-            return jsonify({'error': 'Usuario no encontrado'}), 404
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
