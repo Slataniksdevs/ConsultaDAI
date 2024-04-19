@@ -34,6 +34,7 @@ const myEventsList = [
 ];
 
 function Sidebar({ rol }) {
+  
   return (
     <VStack
       bg="gray.800"
@@ -66,7 +67,7 @@ function Sidebar({ rol }) {
           <Text color="white">Configuración</Text>
         </Flex>
         {/* Mostrar el enlace solo si el rol es 'admin' (1) */}
-        {rol === '1' && (
+        {rol === 1 && (
           <Flex align="center" cursor="pointer" mb="2">
             <Icon as={EditIcon} color="white" mr="2" />
             <Text color="white">Administrador</Text>
@@ -114,7 +115,7 @@ function Dashboard() {
 
   useEffect(() => {
     // Obtener el rol del almacenamiento local
-    const userRol = localStorage.getItem('rol');
+    const userRol = parseInt(localStorage.getItem('rol')); // Convertir a entero
     setRol(userRol);
   }, []);
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Heading, Input, Button, InputGroup, InputRightElement, Card, CardHeader, CardBody  } from '@chakra-ui/react';
+import { Box, Heading, Input, Button, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
 import userApi from '../../api/userApi';
-
 
 function Login() {
   const [user_name, setUserName] = useState('');
@@ -25,23 +24,8 @@ function Login() {
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
 
-      // Redirigir a diferentes rutas según el rol del usuario
-      switch (rol) {
-        case 1:
-          navigate('/dashboard-admin');
-          break;
-        case 2:
-          navigate('/dashboard-soporte');
-          break;
-        case 3:
-          navigate('/dashboard-paciente');
-          break;
-        case 4:
-          navigate('/dashboard-profesional');
-          break;
-        default:
-          navigate('/dashboard');
-      }
+      // Redirigir al Dashboard después de iniciar sesión
+      navigate('/dashboard');
     } catch (error) {
       setError(error);
     }
@@ -67,7 +51,7 @@ function Login() {
         <Heading mb="8" textAlign="center" fontFamily="serif" fontWeight="bold">
           Iniciar sesión
         </Heading>
-        <center>{error && <p>{error}</p>}</center> 
+        <center>{error && <Text color="red.500">{error}</Text>}</center> 
         <Input
           placeholder="Nombre Usuario"
           variant="filled"
@@ -106,7 +90,7 @@ function Login() {
         >
           Iniciar sesión
         </Button>
-        {error && <p>{error}</p>}
+        {error && <Text color="red.500">{error}</Text>}
       </Box>
     </Box>
   );
