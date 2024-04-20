@@ -1,6 +1,7 @@
 // Dashboard.js
 
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -11,7 +12,7 @@ import {
   Text,
   ChakraProvider
 } from "@chakra-ui/react";
-import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon } from "@chakra-ui/icons";
+import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon, CloseIcon } from "@chakra-ui/icons";
 import UserManagement from '../UserManagment/userManagment'; // Importar el componente de Mantenedor de Usuarios
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -35,6 +36,14 @@ const myEventsList = [
 ];
 
 function Sidebar({ rol, setView }) {
+
+  const handleLogout = () => {
+    // Aquí puedes agregar la lógica para cerrar sesión
+    // Por ejemplo, limpiar el almacenamiento local y redirigir al inicio
+    localStorage.removeItem("rol");
+    // Redirigir al directorio raíz ("/")
+    window.location.href = "/";
+  };
   
   return (
     <VStack
@@ -48,7 +57,7 @@ function Sidebar({ rol, setView }) {
     >
       <Box>
         <Text fontSize="lg" fontWeight="bold" color="white" mb="4">
-          Dashboard
+          Consulta Arbeit
         </Text>
       </Box>
       <Box>
@@ -61,11 +70,7 @@ function Sidebar({ rol, setView }) {
         </Flex>
         <Flex align="center" cursor="pointer" mb="2">
           <Icon as={EmailIcon} color="white" mr="2" />
-          <Text color="white">Correo</Text>
-        </Flex>
-        <Flex align="center" cursor="pointer" mb="2">
-          <Icon as={SettingsIcon} color="white" mr="2" />
-          <Text color="white">Configuración</Text>
+          <Text color="white">Mis Reservas</Text>
         </Flex>
         {/* Mostrar el enlace solo si el rol es 'admin' (1) */}
         {rol === 1 && (
@@ -73,12 +78,17 @@ function Sidebar({ rol, setView }) {
             <Icon as={EditIcon} color="white" mr="2" />
             <Text color="white">Administrador</Text>
           </Flex>
+        
         )}
       </Box>
+       {/* Enlace de Cerrar Sesión */}
+      <Flex align="center" cursor="pointer" mb="2">
+        <Link to="/" onClick={handleLogout}>
+          <Text color="white">Cerrar Sesión</Text>
+        </Link>
+      </Flex>
       <Spacer />
-      <Box mb="4"> {/* Agregar un margen en la parte inferior del último elemento */}
-        <Text color="white">&copy; 2024 Company</Text>
-      </Box>
+      
     </VStack>
   );
 }

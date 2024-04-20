@@ -64,6 +64,7 @@ def get_users():
             'adress': usuario[6],
             'phone': usuario[7],
             'birth_day': usuario[8],
+            'tipo_usuario': usuario[9]
             
         }
         usuarios_list.append(usuario_dict)

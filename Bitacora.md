@@ -12,3 +12,9 @@ falta:
 2. Sacar el navbar o modificarlo para que sea acorde a lo que se esta realizando 
 3. Seguir con la parte basica de usuarios e interfaces
 ![alt text](<WhatsApp Image 2024-04-19 at 22.50.22_8c74e39d.jpg>)
+
+
+20/04/2024
+
+Vista mantenedor 
+![alt text](image-2.png)

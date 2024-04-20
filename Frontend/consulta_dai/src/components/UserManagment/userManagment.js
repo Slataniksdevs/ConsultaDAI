@@ -37,7 +37,7 @@ function UserManagement() {
     tipo_usuario: '',
   });
 
-  const [editingUserId, setEditingUserId] = useState(null); // Para controlar qué usuario se está editando
+  const [editingUserId, setEditingUserId] = useState(null);
 
   useEffect(() => {
     getUsers();
@@ -101,51 +101,75 @@ function UserManagement() {
     }
   };
 
+  // Función para mapear tipo_usuario a roles
+  const mapTipoUsuarioToRole = (tipo_usuario) => {
+    switch (tipo_usuario) {
+      case 1:
+        return 'Administrador';
+      case 2:
+        return 'Soporte';
+      case 3:
+        return 'Paciente';
+      case 4:
+        return 'Profesional';
+      default:
+        return 'No Asignado';
+    }
+  };
+
   return (
-    <Grid templateColumns="repeat(2, 1fr)" gap={8} p="4">
-      {/* Listado de Usuarios */}
-      <Box gridColumn="span 1">
-        <Text fontSize="xl" mb="4">Administracion de usuarios</Text>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>User Name</Th>
-              <Th>Nombre</Th>
-              <Th>Email</Th>
-              <Th>Acciones</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {users.map((user) => (
-              <Tr key={user.id}>
-                <Td>{user.user_name}</Td>
-                <Td>{`${user.first_name} ${user.last_name}`}</Td>
-                <Td>{user.email}</Td>
-                <Td>
-                  <Stack direction="row" spacing="4" justify="flex-end">
-                    <Button colorScheme="blue" onClick={() => handleEdit(user.id)}>
-                      Editar
-                    </Button>
-                    <Button colorScheme="red" onClick={() => deleteUser(user.id)}>
-                      Eliminar
-                    </Button>
-                  </Stack>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+    <Grid templateColumns="1fr 1fr" gap={8} p="4">
+      {/* Users List */}
+      <Box>
+        <Card bg="white" shadow="md" borderRadius="md" p="4">
+          <CardHeader>
+            <Text fontSize="xl" mb="4">Lista de Usuarios</Text>
+          </CardHeader>
+          <CardBody>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>User Name</Th>
+                  <Th>Nombre</Th>
+                  <Th>Email</Th>
+                  <Th>Rol</Th>
+                  <Th>Acciones</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {users.map((user) => (
+                  <Tr key={user.id}>
+                    <Td>{user.user_name}</Td>
+                    <Td>{`${user.first_name} ${user.last_name}`}</Td>
+                    <Td>{user.email}</Td>
+                    <Td>{mapTipoUsuarioToRole(user.tipo_usuario)}</Td>
+                    <Td>
+                      <Stack direction="row" spacing="4" justify="flex-end">
+                        <Button colorScheme="blue" onClick={() => handleEdit(user.id)}>
+                          Editar
+                        </Button>
+                        <Button colorScheme="red" onClick={() => deleteUser(user.id)}>
+                          Eliminar
+                        </Button>
+                      </Stack>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </CardBody>
+        </Card>
       </Box>
 
-      {/* Formulario de Registro/Edición */}
-      <Box gridColumn="span 1">
-        <Card maxW="md" bg="white" shadow="md" borderRadius="md" p="4">
+      {/* User Form */}
+      <Box>
+        <Card bg="white" shadow="md" borderRadius="md" p="4">
           <CardHeader>
             <Text fontSize="xl" mb="4">{editingUserId ? 'Editar Usuario' : 'Registrar Usuario'}</Text>
           </CardHeader>
           <CardBody>
             <form onSubmit={handleSubmit}>
-              <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+              <Grid templateColumns="1fr 1fr" gap={4}>
                 <FormControl id="user_name">
                   <FormLabel>User Name</FormLabel>
                   <Input
@@ -229,7 +253,7 @@ function UserManagement() {
                 <FormControl id="tipo_usuario">
                   <FormLabel>Tipo Usuario</FormLabel>
                   <Input
-                    type="text"
+                    type="number"  
                     name="tipo_usuario"
                     value={formData.tipo_usuario}
                     onChange={handleChange}
