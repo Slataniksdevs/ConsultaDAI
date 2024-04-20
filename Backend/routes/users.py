@@ -112,4 +112,29 @@ def delete_user(usuario_id):
     except Exception as e:
         return jsonify ({'error': str(e)}),500
     
+    
+
+
+#ENDPOINT PARA ACTUALIZAR PASSWORD USUARIO DESDE EL LOGIN
+@usuarios_bp.route('/usuarios/change_pass/<int:usuario_id>', methods=['PUT'])
+def change_pass(usuario_id):
+    try:
+        # Obtener la nueva contraseña del cuerpo de la solicitud
+        data = request.json
+        nueva_password = data['password']
+
+        # Conexión a la base de datos
+        conn = connect()
+        cursor = conn.cursor()
+
+        # Ejecutar la función actualizar_password en la base de datos
+        cursor.execute("SELECT actualizar_password(%s, %s)", (usuario_id, nueva_password))
+        
+        # Confirmar la transacción y cerrar la conexión
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'message': 'Contraseña actualizada correctamente'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
