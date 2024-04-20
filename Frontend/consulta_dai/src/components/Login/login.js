@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Heading, Input, Button, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
 import userApi from '../../api/userApi';
 
-function Login() {
+function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -24,10 +24,13 @@ function Login() {
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
 
+      // Llamar a la función de autenticación del padre
+      onLogin();
+
       // Redirigir al Dashboard después de iniciar sesión
       navigate('/dashboard');
     } catch (error) {
-      setError(error);
+      setError('Nombre de usuario o contraseña incorrectos');
     }
   };
 
@@ -61,24 +64,24 @@ function Login() {
           value={user_name}
           onChange={(e) => setUserName(e.target.value)}
         />
-      <InputGroup size='md'>
-      <Input
-        pr='4.5rem'
-        type={show ? 'text' : 'password'}
-        placeholder='Enter password'
-        variant="filled"
-        mb="4"
-        bg="gray.100"
-        _hover={{ bg: 'gray.200' }}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <InputGroup size='md'>
+          <Input
+            pr='4.5rem'
+            type={show ? 'text' : 'password'}
+            placeholder='Enter password'
+            variant="filled"
+            mb="4"
+            bg="gray.100"
+            _hover={{ bg: 'gray.200' }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <InputRightElement width='4.5rem'>
             <Button h='1.75rem' size='sm' onClick={handleClick}>
               {show ? 'Hide' : 'Show'}
             </Button>
           </InputRightElement>
-          </InputGroup>
+        </InputGroup>
        
         <Button
           colorScheme="teal"

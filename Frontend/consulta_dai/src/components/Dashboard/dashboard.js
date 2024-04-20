@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+// Dashboard.js
+
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -10,10 +12,9 @@ import {
   ChakraProvider
 } from "@chakra-ui/react";
 import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon } from "@chakra-ui/icons";
+import UserManagement from '../UserManagment/userManagment'; // Importar el componente de Mantenedor de Usuarios
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-
-// Importamos los estilos CSS necesarios para BigCalendar
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
@@ -33,7 +34,7 @@ const myEventsList = [
   },
 ];
 
-function Sidebar({ rol }) {
+function Sidebar({ rol, setView }) {
   
   return (
     <VStack
@@ -68,7 +69,7 @@ function Sidebar({ rol }) {
         </Flex>
         {/* Mostrar el enlace solo si el rol es 'admin' (1) */}
         {rol === 1 && (
-          <Flex align="center" cursor="pointer" mb="2">
+          <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('admin')}>
             <Icon as={EditIcon} color="white" mr="2" />
             <Text color="white">Administrador</Text>
           </Flex>
@@ -112,6 +113,7 @@ function Calendar() {
 
 function Dashboard() {
   const [rol, setRol] = useState(null);
+  const [view, setView] = useState('calendar'); // Estado para controlar qué vista mostrar
 
   useEffect(() => {
     // Obtener el rol del almacenamiento local
@@ -122,8 +124,12 @@ function Dashboard() {
   return (
     <ChakraProvider>
       <Flex>
-        <Sidebar rol={rol} />
-        <Calendar />
+        <Sidebar rol={rol} setView={setView} />
+        {view === 'calendar' ? (
+          <Calendar />
+        ) : (
+          <UserManagement />
+        )}
       </Flex>
     </ChakraProvider>
   );
