@@ -1,7 +1,7 @@
-from flask import Flask,jsonify,request,Blueprint
+from flask import Flask, jsonify, request, Blueprint
 from config import connect
 from flask_cors import CORS
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import check_password_hash, generate_password_hash
 import hashlib
 import bcrypt
 import jwt
@@ -10,8 +10,6 @@ login_bp = Blueprint('login', __name__)
 
 # Clave secreta para firmar los tokens JWT
 SECRET_KEY = 'consultaArbeit'
-
-#POST USER_PASS PARA LOGIN 
 
 @login_bp.route('/login/inicio', methods=['POST'])
 def login():
@@ -48,7 +46,3 @@ def login():
             return jsonify({'error': 'Usuario no encontrado'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
-
-

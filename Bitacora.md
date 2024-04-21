@@ -18,3 +18,14 @@ falta:
 
 Vista mantenedor 
 ![alt text](image-2.png)
+
+20-04-2024 
+
+1. se realizo reserva con autorizacion del token 
+
+to do: 
+Intentar vincular el big calendar con el endpoint y la autorizacion => buscar info de como hacerlo y que beneficios en seguridad nos trae.
+
+![alt text](<WhatsApp Image 2024-04-20 at 23.34.15_a31d9928.jpg>)
+
+![alt text](<WhatsApp Image 2024-04-20 at 23.34.22_b8635f96.jpg>)
