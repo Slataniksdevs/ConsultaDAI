@@ -23,11 +23,11 @@ function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: successOpen, onClose: successCloseModal } = useDisclosure();
+  const { isOpen: successOpen, onOpen: successOpenModal, onClose: successCloseModal } = useDisclosure();
   const toast = useToast(); // Toast de Chakra UI
 
   const handleClick = () => setShow(!show);
@@ -42,7 +42,7 @@ function Login({ onLogin }) {
 
     try {
       const response = await userApi.login(user_name, password);
-      const { token, rol } = response; // user_name desde la respuesta
+      const { token, rol, user_name: loggedInUserName } = response; // user_name desde la respuesta
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
 
