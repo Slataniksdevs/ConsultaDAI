@@ -69,6 +69,7 @@ function Login() {
         </Heading>
         <center>{error && <p>{error}</p>}</center> 
         <Input
+          required
           placeholder="Nombre Usuario"
           variant="filled"
           mb="4"
@@ -79,6 +80,7 @@ function Login() {
         />
       <InputGroup size='md'>
       <Input
+        required
         pr='4.5rem'
         type={show ? 'text' : 'password'}
         placeholder='Enter password'
