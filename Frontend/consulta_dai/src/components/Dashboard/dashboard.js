@@ -1,5 +1,3 @@
-// Dashboard.js
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -10,9 +8,14 @@ import {
   StackDivider,
   Icon,
   Text,
-  ChakraProvider
+  ChakraProvider,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
-import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon, CloseIcon } from "@chakra-ui/icons";
+import { CalendarIcon, EmailIcon, AddIcon, WarningIcon} from "@chakra-ui/icons";
 import UserManagement from '../UserManagment/userManagment'; // Importar el componente de Mantenedor de Usuarios
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -20,20 +23,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
-const myEventsList = [
-  {
-    id: 0,
-    title: 'Evento 1',
-    start: new Date(2024, 3, 1),
-    end: new Date(2024, 3, 2),
-  },
-  {
-    id: 1,
-    title: 'Evento 2',
-    start: new Date(2024, 3, 3),
-    end: new Date(2024, 3, 4),
-  },
-];
+const myEventsList = [];
 
 function Sidebar({ rol, setView }) {
 
@@ -43,6 +33,10 @@ function Sidebar({ rol, setView }) {
     localStorage.removeItem("rol");
     // Redirigir al directorio raíz ("/")
     window.location.href = "/";
+  };
+
+  const handleInicioClick = () => {
+    setView('calendar'); // Cambiar la vista a 'calendar' al hacer clic en Inicio
   };
   
   return (
@@ -64,31 +58,54 @@ function Sidebar({ rol, setView }) {
         <Text color="white" mb="2">
           Menú
         </Text>
-        <Flex align="center" cursor="pointer" mb="2">
+        <Flex align="center" cursor="pointer" mb="2" onClick={handleInicioClick}>
+          <Icon as={AddIcon} color="white" mr="2" />
+          <Text color="white">Inicio</Text>
+        </Flex>
+        <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('calendar')}>
           <Icon as={CalendarIcon} color="white" mr="2" />
           <Text color="white">Calendario</Text>
         </Flex>
-        <Flex align="center" cursor="pointer" mb="2">
+        <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('reservations')}>
           <Icon as={EmailIcon} color="white" mr="2" />
           <Text color="white">Mis Reservas</Text>
         </Flex>
-        {/* Mostrar el enlace solo si el rol es 'admin' (1) */}
+        <Box>
+          {/* Mostrar el acordeón solo si el rol es 'admin' (1) */}
         {rol === 1 && (
-          <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('admin')}>
-            <Icon as={EditIcon} color="white" mr="2" />
-            <Text color="white">Administrador</Text>
-          </Flex>
-        
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h1>
+                <AccordionButton>
+                  <Flex align="center">
+                  <Icon as={WarningIcon} color="white" mr="2" />
+                    <Text color="white" mb="0">Administrador</Text> {/* Ajuste de margen para alinear con otros */}
+                  </Flex>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h1>
+              <AccordionPanel bg="gray.700" p="2">
+                <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('users')}>
+                  <Text color="white">Usuarios</Text>
+                </Flex>
+                <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('reservations')}>
+                  <Text color="white">Reservas</Text>
+                </Flex>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         )}
+        </Box>
+        
       </Box>
-       {/* Enlace de Cerrar Sesión */}
+      {/* Enlace de Cerrar Sesión */}
       <Flex align="center" cursor="pointer" mb="2">
         <Link to="/" onClick={handleLogout}>
           <Text color="white">Cerrar Sesión</Text>
         </Link>
       </Flex>
       <Spacer />
-      
+        
     </VStack>
   );
 }
@@ -99,7 +116,6 @@ function Calendar() {
       <Text fontSize="xl" mb="4">
         Reserva de Horas
       </Text>
-      
       <div>
         <BigCalendar
           localizer={localizer}
