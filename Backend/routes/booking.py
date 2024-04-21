@@ -1,6 +1,9 @@
 from flask import Blueprint, jsonify, request
 from config import connect
+from flask_cors import CORS
 import jwt
+from datetime import datetime, time
+
 
 booking_bp = Blueprint('booking', __name__)
 
@@ -14,12 +17,13 @@ def create_booking():
         data = request.json
         user_name = data.get('user_name')
         fecha_reserva = data.get('fecha_reserva')
-        horario = data.get('horario')
+        hora_inicio = data.get('hora_inicio')
+        hora_termino = data.get('hora_termino')
         telefono = data.get('telefono')
         email = data.get('email')
         
         # Verificar si falta algún dato en la solicitud
-        if not user_name or not fecha_reserva or not horario or not telefono or not email:
+        if not user_name or not fecha_reserva or not hora_inicio or not hora_termino or not telefono or not email:
             return jsonify({'error': 'Faltan campos obligatorios'}), 400
         
         # Verificar si el token JWT está presente en la solicitud
@@ -40,10 +44,10 @@ def create_booking():
         conn = connect()
         cursor = conn.cursor()
 
-        # Consulta para insertar la reserva
+        # Consulta para insertar la reserva con los nombres de los campos correctos
         cursor.execute(
-            "INSERT INTO public.reserva (user_name, fecha_reserva, horario, telefono, email) VALUES (%s, %s, %s, %s, %s)",
-            (user_name, fecha_reserva, horario, telefono, email)
+            "INSERT INTO public.reserva (user_name, fecha_reserva, hora_inicio, hora_termino, telefono, email) VALUES (%s, %s, %s, %s, %s, %s)",
+            (user_name, fecha_reserva, hora_inicio, hora_termino, telefono, email)
         )
         
         conn.commit()
@@ -52,3 +56,31 @@ def create_booking():
         return jsonify({'message': 'Reserva realizada con éxito'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+
+
+#MOSTRAR LAS RESERVAS REALIZADAS
+@booking_bp.route('/booking/list_booking', methods=['GET'])
+def get_bookings():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT user_name, fecha_reserva, hora_inicio, hora_termino, telefono, email FROM public.reserva;")
+    booking_data = cursor.fetchall()
+
+    cursor.close()
+    
+    booking_list = []
+    for booking in booking_data:
+        booking_dict = {
+            'user_name': booking[0],
+            'fecha_reserva': booking[1],
+            'hora_inicio': booking[2].strftime("%H:%M"),  # Formatea hora de inicio
+            'hora_termino': booking[3].strftime("%H:%M"),  # Formatea hora de término
+            'telefono': booking[4],
+            'email': booking[5]
+        }
+        booking_list.append(booking_dict)
+    
+    return jsonify(booking_list)

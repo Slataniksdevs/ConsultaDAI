@@ -15,18 +15,15 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/react";
-import { CalendarIcon, EmailIcon, AddIcon, WarningIcon} from "@chakra-ui/icons";
+import { CalendarIcon, EmailIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
 import UserManagement from '../UserManagment/userManagment'; // Importar el componente de Mantenedor de Usuarios
-import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
+import Calendar from '../Calendar/calendar'; // Importar el componente Calendar
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
-const localizer = momentLocalizer(moment);
 
 const myEventsList = [];
 
 function Sidebar({ rol, setView }) {
-
   const handleLogout = () => {
     // Aquí puedes agregar la lógica para cerrar sesión
     // Por ejemplo, limpiar el almacenamiento local y redirigir al inicio
@@ -107,33 +104,6 @@ function Sidebar({ rol, setView }) {
       <Spacer />
         
     </VStack>
-  );
-}
-
-function Calendar() {
-  return (
-    <Box flex="1" p="4">
-      <Text fontSize="xl" mb="4">
-        Reserva de Horas
-      </Text>
-      <div>
-        <BigCalendar
-          localizer={localizer}
-          events={myEventsList}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-          messages={{
-            next: "Siguiente",
-            previous: "Anterior",
-            today: "Hoy",
-            month: "Mes",
-            week: "Semana",
-            day: "Día",
-          }}
-        />
-      </div>
-    </Box>
   );
 }
 

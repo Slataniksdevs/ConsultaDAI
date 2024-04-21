@@ -23,21 +23,27 @@ function App() {
     <ChakraProvider>
       <Router>
         <div className="App">
-          <header className="App-header">
-            <Navbar />
-          </header>
+          
           <Routes>
             {/* Ruta para el login */}
             <Route
               path="/"
-              element={<Login onLogin={handleLogin} />}
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/dashboard" replace />
+                ) : (
+                  <Login onLogin={handleLogin} />
+                )
+              }
             />
             {/* Ruta protegida para el dashboard */}
             <Route
               path="/dashboard"
               element={
                 isAuthenticated ? (
-                  <Dashboard />
+                  <>
+                    <Dashboard />
+                  </>
                 ) : (
                   <Navigate to="/" replace />
                 )
@@ -55,6 +61,7 @@ function App() {
               }
             />
           </Routes>
+          
 
           <footer className='App-Footer'>
             <Footer />
