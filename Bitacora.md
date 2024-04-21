@@ -29,3 +29,18 @@ Intentar vincular el big calendar con el endpoint y la autorizacion => buscar in
 ![alt text](<WhatsApp Image 2024-04-20 at 23.34.15_a31d9928.jpg>)
 
 ![alt text](<WhatsApp Image 2024-04-20 at 23.34.22_b8635f96.jpg>)
+
+
+21-04-2024
+Actualizacion de la tabla reserva
+
+
+CREATE TABLE reserva (
+    id SERIAL PRIMARY KEY,
+    user_name VARCHAR(255),
+    fecha_reserva DATE,
+    hora_inicio TIME WITH TIME ZONE,
+    hora_termino TIME WITH TIME ZONE,
+    telefono VARCHAR(20),
+    email VARCHAR(255)
+);
