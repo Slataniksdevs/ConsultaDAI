@@ -45,3 +45,13 @@ export const deleteUser = async (userId) => {
     throw error;
   }
 };
+
+export const getUserByUsername = async (username) => {
+  try {
+    const response = await axios.get(`${API_URL}/usuarios/get_user_by_username/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener usuario por username:', error);
+    throw error;
+  }
+};

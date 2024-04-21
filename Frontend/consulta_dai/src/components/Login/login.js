@@ -23,7 +23,6 @@ function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,7 +44,8 @@ function Login({ onLogin }) {
       const { token, rol, user_name: loggedInUserName } = response; // user_name desde la respuesta
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
-
+      localStorage.setItem('user_name', loggedInUserName); // Almacenar el nombre de usuario
+      
       // Llamar a la función de autenticación del padre
       onLogin();
 
@@ -139,6 +139,7 @@ function Login({ onLogin }) {
             </ModalContent>
           </Modal>
         )}
+        {/* Remove this section, as 'success' is not used
         {success && (
           <Modal isOpen={successOpen} onClose={successCloseModal}>
             <ModalOverlay />
@@ -150,7 +151,7 @@ function Login({ onLogin }) {
               </ModalBody>
             </ModalContent>
           </Modal>
-        )}
+        )} */}
       </Box>
     </Box>
   );

@@ -38,7 +38,7 @@ const myEventsList = [
 
 function Calendar() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [formData, setFormData] = useState({
     user_name: "",
     telefono: "",
@@ -46,7 +46,12 @@ function Calendar() {
   });
 
   const handleEventClick = (event) => {
-    setSelectedDate(event.start);
+    setSelectedEvent(event);
+    setFormData({
+      user_name: event.title || "",
+      telefono: "",
+      email: "",
+    });
     setModalOpen(true);
   };
 
