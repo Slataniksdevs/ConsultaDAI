@@ -1,49 +1,71 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Heading, Input, Button, InputGroup, InputRightElement, Card, CardHeader, CardBody  } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Input,
+  Button,
+  InputGroup,
+  InputRightElement,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
 import userApi from '../../api/userApi';
 
-
-function Login() {
+function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
+  const [show, setShow] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: successOpen, onOpen: successOpenModal, onClose: successCloseModal } = useDisclosure();
+  const toast = useToast(); // Toast de Chakra UI
+
+  const handleClick = () => setShow(!show);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user_name || !password) {
       setError('Por favor ingresa un nombre de usuario y contraseña.');
+      onOpen();
       return;
     }
 
     try {
       const response = await userApi.login(user_name, password);
-      const { token, rol } = response;
+      const { token, rol, user_name: loggedInUserName } = response; // user_name desde la respuesta
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
 
-      // Redirigir a diferentes rutas según el rol del usuario
-      switch (rol) {
-        case 1:
-          navigate('/dashboard-admin');
-          break;
-        case 2:
-          navigate('/dashboard-soporte');
-          break;
-        case 3:
-          navigate('/dashboard-paciente');
-          break;
-        case 4:
-          navigate('/dashboard-profesional');
-          break;
-        default:
-          navigate('/dashboard');
-      }
+      // Llamar a la función de autenticación del padre
+      onLogin();
+
+      // Redirigir al Dashboard después de iniciar sesión
+      navigate('/dashboard');
+
+      // Mostrar el toast de bienvenida
+      toast({
+        title: `Bienvenido, ${user_name}!`,
+        description: 'Has iniciado sesión correctamente.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Cerrar el modal de éxito
+      successCloseModal();
     } catch (error) {
-      setError(error);
+      setError('Nombre de usuario o contraseña incorrectos');
+      onOpen();
     }
   };
 
@@ -57,7 +79,7 @@ function Login() {
     >
       <Box
         maxW="md"
-        w="full" 
+        w="full"
         bg="white"
         py="8"
         px="10"
@@ -67,7 +89,6 @@ function Login() {
         <Heading mb="8" textAlign="center" fontFamily="serif" fontWeight="bold">
           Iniciar sesión
         </Heading>
-        <center>{error && <p>{error}</p>}</center> 
         <Input
           required
           placeholder="Nombre Usuario"
@@ -78,6 +99,7 @@ function Login() {
           value={user_name}
           onChange={(e) => setUserName(e.target.value)}
         />
+<<<<<<< HEAD
       <InputGroup size='md'>
       <Input
         required
@@ -93,11 +115,27 @@ function Login() {
       />
           <InputRightElement width='4.5rem'>
             <Button h='1.75rem' size='sm' onClick={handleClick}>
+=======
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type={show ? 'text' : 'password'}
+            placeholder="Enter password"
+            variant="filled"
+            mb="4"
+            bg="gray.100"
+            _hover={{ bg: 'gray.200' }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <InputRightElement width="4.5rem">
+            <Button h="1.75rem" size="sm" onClick={handleClick}>
+>>>>>>> 5bf41d7476f420212b47fd7ffefeff6c8ee3f1c3
               {show ? 'Hide' : 'Show'}
             </Button>
           </InputRightElement>
-          </InputGroup>
-       
+        </InputGroup>
+
         <Button
           colorScheme="teal"
           variant="solid"
@@ -108,7 +146,30 @@ function Login() {
         >
           Iniciar sesión
         </Button>
-        {error && <p>{error}</p>}
+        {error && (
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Error</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text color="red.500">{error}</Text>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        )}
+        {success && (
+          <Modal isOpen={successOpen} onClose={successCloseModal}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Inicio de Sesión Exitoso</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text color="green.500">¡Bienvenido! Has iniciado sesión correctamente.</Text>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        )}
       </Box>
     </Box>
   );

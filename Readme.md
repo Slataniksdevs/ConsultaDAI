@@ -206,3 +206,9 @@ INSERT INTO public.rol (id, nombre) VALUES
 (2, 'Soporte'),
 (3, 'Paciente'),
 (4, 'Profesional');###
+
+
+
+
+### ACTUALIZAR PASSWORD 
+

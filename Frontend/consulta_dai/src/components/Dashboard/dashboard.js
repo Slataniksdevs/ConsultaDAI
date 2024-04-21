@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -7,32 +8,37 @@ import {
   StackDivider,
   Icon,
   Text,
-  ChakraProvider
+  ChakraProvider,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
-import { CalendarIcon, EmailIcon, SettingsIcon, EditIcon } from "@chakra-ui/icons";
+import { CalendarIcon, EmailIcon, AddIcon, WarningIcon} from "@chakra-ui/icons";
+import UserManagement from '../UserManagment/userManagment'; // Importar el componente de Mantenedor de Usuarios
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import 'moment/locale/es'; // Importar el locale de español para moment.js
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
-const myEventsList = [
-  {
-    id: 0,
-    title: 'Evento 1',
-    start: new Date(2024, 3, 1),
-    end: new Date(2024, 3, 2),
-  },
-  {
-    id: 1,
-    title: 'Evento 2',
-    start: new Date(2024, 3, 3),
-    end: new Date(2024, 3, 4),
-  },
-];
+const myEventsList = [];
 
-function Sidebar({ rol }) {
+function Sidebar({ rol, setView }) {
+
+  const handleLogout = () => {
+    // Aquí puedes agregar la lógica para cerrar sesión
+    // Por ejemplo, limpiar el almacenamiento local y redirigir al inicio
+    localStorage.removeItem("rol");
+    // Redirigir al directorio raíz ("/")
+    window.location.href = "/";
+  };
+
+  const handleInicioClick = () => {
+    setView('calendar'); // Cambiar la vista a 'calendar' al hacer clic en Inicio
+  };
+  
   return (
     <VStack
       bg="gray.800"
@@ -45,37 +51,61 @@ function Sidebar({ rol }) {
     >
       <Box>
         <Text fontSize="lg" fontWeight="bold" color="white" mb="4">
-          Dashboard
+          Consulta Arbeit
         </Text>
       </Box>
       <Box>
         <Text color="white" mb="2">
           Menú
         </Text>
-        <Flex align="center" cursor="pointer" mb="2">
+        <Flex align="center" cursor="pointer" mb="2" onClick={handleInicioClick}>
+          <Icon as={AddIcon} color="white" mr="2" />
+          <Text color="white">Inicio</Text>
+        </Flex>
+        <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('calendar')}>
           <Icon as={CalendarIcon} color="white" mr="2" />
           <Text color="white">Calendario</Text>
         </Flex>
-        <Flex align="center" cursor="pointer" mb="2">
+        <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('reservations')}>
           <Icon as={EmailIcon} color="white" mr="2" />
-          <Text color="white">Correo</Text>
+          <Text color="white">Mis Reservas</Text>
         </Flex>
-        <Flex align="center" cursor="pointer" mb="2">
-          <Icon as={SettingsIcon} color="white" mr="2" />
-          <Text color="white">Configuración</Text>
-        </Flex>
-        {/* Mostrar el enlace solo si el rol es 'admin' (1) */}
-        {rol === '1' && (
-          <Flex align="center" cursor="pointer" mb="2">
-            <Icon as={EditIcon} color="white" mr="2" />
-            <Text color="white">Administrador</Text>
-          </Flex>
+        <Box>
+          {/* Mostrar el acordeón solo si el rol es 'admin' (1) */}
+        {rol === 1 && (
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h1>
+                <AccordionButton>
+                  <Flex align="center">
+                  <Icon as={WarningIcon} color="white" mr="2" />
+                    <Text color="white" mb="0">Administrador</Text> {/* Ajuste de margen para alinear con otros */}
+                  </Flex>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h1>
+              <AccordionPanel bg="gray.700" p="2">
+                <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('users')}>
+                  <Text color="white">Usuarios</Text>
+                </Flex>
+                <Flex align="center" cursor="pointer" mb="2" onClick={() => setView('reservations')}>
+                  <Text color="white">Reservas</Text>
+                </Flex>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         )}
+        </Box>
+        
       </Box>
+      {/* Enlace de Cerrar Sesión */}
+      <Flex align="center" cursor="pointer" mb="2">
+        <Link to="/" onClick={handleLogout}>
+          <Text color="white">Cerrar Sesión</Text>
+        </Link>
+      </Flex>
       <Spacer />
-      <Box mb="4"> {/* Agregar un margen en la parte inferior del último elemento */}
-        <Text color="white">&copy; 2024 Company</Text>
-      </Box>
+        
     </VStack>
   );
 }
@@ -86,7 +116,6 @@ function Calendar() {
       <Text fontSize="xl" mb="4">
         Reserva de Horas
       </Text>
-      
       <div>
         <BigCalendar
           localizer={localizer}
@@ -95,18 +124,12 @@ function Calendar() {
           endAccessor="end"
           style={{ height: 500 }}
           messages={{
-            allDay: "Todo el día",
-            previous: "Anterior",
             next: "Siguiente",
+            previous: "Anterior",
             today: "Hoy",
             month: "Mes",
             week: "Semana",
             day: "Día",
-            agenda: "Agenda",
-            date: "Fecha",
-            time: "Hora",
-            event: "Evento",
-            noEventsInRange: "Sin eventos"
           }}
         />
       </div>
@@ -116,23 +139,23 @@ function Calendar() {
 
 function Dashboard() {
   const [rol, setRol] = useState(null);
+  const [view, setView] = useState('calendar'); // Estado para controlar qué vista mostrar
 
   useEffect(() => {
     // Obtener el rol del almacenamiento local
-    const userRol = localStorage.getItem('rol');
+    const userRol = parseInt(localStorage.getItem('rol')); // Convertir a entero
     setRol(userRol);
-  }, []);
-
-  // Configuración inicial para establecer moment en español
-  useEffect(() => {
-    moment.locale('es');
   }, []);
 
   return (
     <ChakraProvider>
       <Flex>
-        <Sidebar rol={rol} />
-        <Calendar />
+        <Sidebar rol={rol} setView={setView} />
+        {view === 'calendar' ? (
+          <Calendar />
+        ) : (
+          <UserManagement />
+        )}
       </Flex>
     </ChakraProvider>
   );
