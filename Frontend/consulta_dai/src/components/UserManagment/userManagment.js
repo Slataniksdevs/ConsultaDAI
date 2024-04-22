@@ -1,5 +1,3 @@
-// UserManagement.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
@@ -20,7 +18,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
 } from '@chakra-ui/react';
 
 function UserManagement() {
@@ -118,159 +115,155 @@ function UserManagement() {
   };
 
   return (
-    <Grid templateColumns="1fr 1fr" gap={8} p="4">
+    <Box p="4">
       {/* Users List */}
-      <Box>
-        <Card bg="white" shadow="md" borderRadius="md" p="4">
-          <CardHeader>
-            <Text fontSize="xl" mb="4">Lista de Usuarios</Text>
-          </CardHeader>
-          <CardBody>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>User Name</Th>
-                  <Th>Nombre</Th>
-                  <Th>Email</Th>
-                  <Th>Rol</Th>
-                  <Th>Acciones</Th>
+      <Card bg="white" shadow="md" borderRadius="md" mb="4">
+        <CardHeader>
+          <Text fontSize="xl" mb="4">Lista de Usuarios</Text>
+        </CardHeader>
+        <CardBody>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>User Name</Th>
+                <Th>Nombre</Th>
+                <Th>Email</Th>
+                <Th>Rol</Th>
+                <Th>Acciones</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {users.map((user) => (
+                <Tr key={user.id}>
+                  <Td>{user.user_name}</Td>
+                  <Td>{`${user.first_name} ${user.last_name}`}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>{mapTipoUsuarioToRole(user.tipo_usuario)}</Td>
+                  <Td>
+                    <Stack direction="row" spacing="4" justify="flex-end">
+                      <Button colorScheme="blue" onClick={() => handleEdit(user.id)}>
+                        Editar
+                      </Button>
+                      <Button colorScheme="red" onClick={() => deleteUser(user.id)}>
+                        Eliminar
+                      </Button>
+                    </Stack>
+                  </Td>
                 </Tr>
-              </Thead>
-              <Tbody>
-                {users.map((user) => (
-                  <Tr key={user.id}>
-                    <Td>{user.user_name}</Td>
-                    <Td>{`${user.first_name} ${user.last_name}`}</Td>
-                    <Td>{user.email}</Td>
-                    <Td>{mapTipoUsuarioToRole(user.tipo_usuario)}</Td>
-                    <Td>
-                      <Stack direction="row" spacing="4" justify="flex-end">
-                        <Button colorScheme="blue" onClick={() => handleEdit(user.id)}>
-                          Editar
-                        </Button>
-                        <Button colorScheme="red" onClick={() => deleteUser(user.id)}>
-                          Eliminar
-                        </Button>
-                      </Stack>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </CardBody>
-        </Card>
-      </Box>
+              ))}
+            </Tbody>
+          </Table>
+        </CardBody>
+      </Card>
 
       {/* User Form */}
-      <Box>
-        <Card bg="white" shadow="md" borderRadius="md" p="4">
-          <CardHeader>
-            <Text fontSize="xl" mb="4">{editingUserId ? 'Editar Usuario' : 'Registrar Usuario'}</Text>
-          </CardHeader>
-          <CardBody>
-            <form onSubmit={handleSubmit}>
-              <Grid templateColumns="1fr 1fr" gap={4}>
-                <FormControl id="user_name">
-                  <FormLabel>User Name</FormLabel>
-                  <Input
-                    type="text"
-                    name="user_name"
-                    value={formData.user_name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+      <Card bg="white" shadow="md" borderRadius="md">
+        <CardHeader>
+          <Text fontSize="xl" mb="4">{editingUserId ? 'Editar Usuario' : 'Registrar Usuario'}</Text>
+        </CardHeader>
+        <CardBody>
+          <form onSubmit={handleSubmit}>
+            <Grid templateColumns="1fr" gap={2}>
+              <FormControl id="user_name">
+                <FormLabel>User Name</FormLabel>
+                <Input
+                  type="text"
+                  name="user_name"
+                  value={formData.user_name}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="password">
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="first_name">
-                  <FormLabel>First Name</FormLabel>
-                  <Input
-                    type="text"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+              <FormControl id="first_name">
+                <FormLabel>First Name</FormLabel>
+                <Input
+                  type="text"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="last_name">
-                  <FormLabel>Last Name</FormLabel>
-                  <Input
-                    type="text"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+              <FormControl id="last_name">
+                <FormLabel>Last Name</FormLabel>
+                <Input
+                  type="text"
+                  name="last_name"
+                  value={formData.last_name}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="email">
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+              <FormControl id="email">
+                <FormLabel>Email</FormLabel>
+                <Input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="phone">
-                  <FormLabel>Phone</FormLabel>
-                  <Input
-                    type="text"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+              <FormControl id="phone">
+                <FormLabel>Phone</FormLabel>
+                <Input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="birth_date">
-                  <FormLabel>Birth Date</FormLabel>
-                  <Input
-                    type="date"
-                    name="birth_date"
-                    value={formData.birth_date}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+              <FormControl id="birth_date">
+                <FormLabel>Birth Date</FormLabel>
+                <Input
+                  type="date"
+                  name="birth_date"
+                  value={formData.birth_date}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="address">
-                  <FormLabel>Address</FormLabel>
-                  <Input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+              <FormControl id="address">
+                <FormLabel>Address</FormLabel>
+                <Input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                />
+              </FormControl>
 
-                <FormControl id="tipo_usuario">
-                  <FormLabel>Tipo Usuario</FormLabel>
-                  <Input
-                    type="number"  
-                    name="tipo_usuario"
-                    value={formData.tipo_usuario}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Button mt="4" type="submit" colorScheme="teal">
-                {editingUserId ? 'Guardar Cambios' : 'Registrar Usuario'}
-              </Button>
-              <Button mt="4" ml="4" type="button" onClick={clearForm}>
-                Cancelar
-              </Button>
-            </form>
-          </CardBody>
-        </Card>
-      </Box>
-    </Grid>
+              <FormControl id="tipo_usuario">
+                <FormLabel>Tipo Usuario</FormLabel>
+                <Input
+                  type="number"
+                  name="tipo_usuario"
+                  value={formData.tipo_usuario}
+                  onChange={handleChange}
+                />
+              </FormControl>
+            </Grid>
+            <Button mt="4" type="submit" colorScheme="teal" size="sm">
+              {editingUserId ? 'Guardar Cambios' : 'Registrar Usuario'}
+            </Button>
+            <Button mt="4" ml="2" type="button" onClick={clearForm} size="sm">
+              Cancelar
+            </Button>
+          </form>
+        </CardBody>
+      </Card>
+    </Box>
   );
 }
 
