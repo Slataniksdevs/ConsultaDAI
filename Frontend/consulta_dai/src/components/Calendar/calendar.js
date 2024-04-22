@@ -16,6 +16,7 @@ import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReservaModal from "../ReservaModal/reservaModal";
+import { useMediaQuery } from "react-responsive";
 
 const localizer = momentLocalizer(moment);
 
@@ -38,6 +39,8 @@ function Calendar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handleEventClick = (event) => {
     setSelectedEvent(event);
@@ -70,7 +73,7 @@ function Calendar() {
           events={myEventsList}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 500 }}
+          style={{ height: isMobile ? 300 : 500 }}
           messages={{
             next: "Siguiente",
             previous: "Anterior",
