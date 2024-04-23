@@ -18,12 +18,12 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import userApi from '../../api/userApi';
+import { useMediaQuery } from 'react-responsive'; // Importar useMediaQuery
 
 function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,7 +45,8 @@ function Login({ onLogin }) {
       const { token, rol, user_name: loggedInUserName } = response; // user_name desde la respuesta
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
-
+      localStorage.setItem('user_name', loggedInUserName); // Almacenar el nombre de usuario
+      
       // Llamar a la función de autenticación del padre
       onLogin();
 
@@ -69,6 +70,9 @@ function Login({ onLogin }) {
     }
   };
 
+  // Define un breakpoint para determinar si es un dispositivo móvil
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
   return (
     <Box
       display="flex"
@@ -78,11 +82,11 @@ function Login({ onLogin }) {
       minHeight="100vh"
     >
       <Box
-        maxW="md"
+        maxW={isMobile ? "90%" : "md"} // Cambia el ancho del contenedor según el dispositivo
         w="full"
         bg="white"
         py="8"
-        px="10"
+        px={isMobile ? "4" : "10"} // Ajusta el padding según el dispositivo
         borderRadius="lg"
         boxShadow="lg"
       >
@@ -158,18 +162,7 @@ function Login({ onLogin }) {
             </ModalContent>
           </Modal>
         )}
-        {success && (
-          <Modal isOpen={successOpen} onClose={successCloseModal}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Inicio de Sesión Exitoso</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Text color="green.500">¡Bienvenido! Has iniciado sesión correctamente.</Text>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        )}
+       
       </Box>
     </Box>
   );

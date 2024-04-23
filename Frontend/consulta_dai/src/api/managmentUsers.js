@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const API_URL = 'http://localhost:5000'; 
 
 // Obtener Lista de Usuarios
@@ -42,6 +40,16 @@ export const deleteUser = async (userId) => {
     return response.data;
   } catch (error) {
     console.error('Error al eliminar usuario:', error);
+    throw error;
+  }
+};
+
+export const getUserByUsername = async (username) => {
+  try {
+    const response = await axios.get(`${API_URL}/usuarios/get_user_by_username/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener usuario por username:', error);
     throw error;
   }
 };
