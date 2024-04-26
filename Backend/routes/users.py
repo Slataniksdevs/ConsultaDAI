@@ -138,3 +138,32 @@ def change_pass(usuario_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+### ENDPOINT PARA BUSCAR USER BY ID
+@usuarios_bp.route('/usuarios/get_user_by_id/<int:usuario_id>', methods=['GET'])
+def get_user_by_id(usuario_id):
+    try:
+        conn = connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM public.cliente WHERE id=%s", (usuario_id,))
+        user_data = cursor.fetchone()
+        conn.close()
+        
+        if user_data:
+            user = {
+                'id': user_data[0],
+                'user_name': user_data[1],
+                'password': user_data[2],
+                'first_name': user_data[3],
+                'last_name': user_data[4],
+                'email': user_data[5],
+                'address': user_data[6],
+                'phone': user_data[7],
+                'birth_date': user_data[8],
+                'tipo_usuario': user_data[9]
+            }
+            return jsonify(user), 200
+        else:
+            return jsonify({'message': 'Usuario no encontrado'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

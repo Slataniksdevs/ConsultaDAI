@@ -15,6 +15,7 @@ import {
 
 function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
   const [user_name, setUserName] = useState("");
+  const userName = localStorage.getItem('user_name' , user_name);
   const [telefono, setTelefono] = useState("");
   const [email, setEmail] = useState("");
 
@@ -45,10 +46,18 @@ function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
         <form onSubmit={handleSubmit}>
           <ModalBody>
             <FormControl>
-              <FormLabel>Nombre de Usuario</FormLabel>
+              <FormLabel>Username</FormLabel>
+              <Input
+                placeholder="Username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Nombre Usuario</FormLabel>
               <Input
                 placeholder="Nombre de Usuario"
-                value={user_name}
+                value=''
                 onChange={(e) => setUserName(e.target.value)}
               />
             </FormControl>
