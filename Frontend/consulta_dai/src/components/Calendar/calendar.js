@@ -88,6 +88,8 @@ function Calendar() {
           selectable
           onSelectEvent={handleEventClick} // Manejar clic en un evento
           onSelectSlot={() => setModalOpen(true)} // Manejar clic en un espacio vacío
+          min={new Date().setHours(8, 0, 0)} // Horario mínimo: 8 am
+          max={new Date().setHours(18, 0, 0)} // Horario máximo: 6 pm
         />
       </div>
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>

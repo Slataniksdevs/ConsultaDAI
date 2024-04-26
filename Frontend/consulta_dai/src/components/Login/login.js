@@ -18,6 +18,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import userApi from '../../api/userApi';
+import backgroundImage from '../../static/Imagenes/Portada_Arbeit_5.jpg';
 
 function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
@@ -76,6 +77,7 @@ function Login({ onLogin }) {
       alignItems="center"
       justifyContent="center"
       minHeight="100vh"
+      backgroundImage={`url(${backgroundImage})`}
     >
       <Box
         maxW="md"

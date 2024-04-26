@@ -1,5 +1,3 @@
-// UserManagement.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
@@ -118,7 +116,7 @@ function UserManagement() {
   };
 
   return (
-    <Grid templateColumns="1fr 1fr" gap={8} p="4">
+    <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={8} p="4">
       {/* Users List */}
       <Box>
         <Card bg="white" shadow="md" borderRadius="md" p="4">
@@ -144,7 +142,7 @@ function UserManagement() {
                     <Td>{user.email}</Td>
                     <Td>{mapTipoUsuarioToRole(user.tipo_usuario)}</Td>
                     <Td>
-                      <Stack direction="row" spacing="4" justify="flex-end">
+                      <Stack direction={{ base: "column", md: "row" }} spacing={{ base: "2", md: "4" }} justify="flex-end">
                         <Button colorScheme="blue" onClick={() => handleEdit(user.id)}>
                           Editar
                         </Button>
@@ -169,7 +167,7 @@ function UserManagement() {
           </CardHeader>
           <CardBody>
             <form onSubmit={handleSubmit}>
-              <Grid templateColumns="1fr 1fr" gap={4}>
+              <Stack spacing="4">
                 <FormControl id="user_name">
                   <FormLabel>User Name</FormLabel>
                   <Input
@@ -259,13 +257,15 @@ function UserManagement() {
                     onChange={handleChange}
                   />
                 </FormControl>
-              </Grid>
-              <Button mt="4" type="submit" colorScheme="teal">
-                {editingUserId ? 'Guardar Cambios' : 'Registrar Usuario'}
-              </Button>
-              <Button mt="4" ml="4" type="button" onClick={clearForm}>
-                Cancelar
-              </Button>
+              </Stack>
+              <Stack direction={{ base: "column", md: "row" }} spacing={{ base: "2", md: "4" }} mt="4">
+                <Button type="submit" colorScheme="teal" flex="1">
+                  {editingUserId ? 'Guardar Cambios' : 'Registrar Usuario'}
+                </Button>
+                <Button type="button" onClick={clearForm} flex="1">
+                  Cancelar
+                </Button>
+              </Stack>
             </form>
           </CardBody>
         </Card>
