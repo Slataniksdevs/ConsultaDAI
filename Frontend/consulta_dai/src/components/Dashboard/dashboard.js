@@ -162,10 +162,15 @@ function Sidebar({ rol, setView }) {
 function Dashboard() {
   const [rol, setRol] = useState(null);
   const [view, setView] = useState('calendar');
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const userRol = parseInt(localStorage.getItem('rol'));
     setRol(userRol);
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      setUserData(JSON.parse(userData));
+    }
   }, []);
 
   return (
@@ -173,7 +178,7 @@ function Dashboard() {
       <Flex>
         <Sidebar rol={rol} setView={setView} />
         {view === 'calendar' ? (
-          <Calendar />
+          <Calendar userData={userData} />
         ) : (
           <UserManagement />
         )}
@@ -183,3 +188,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+

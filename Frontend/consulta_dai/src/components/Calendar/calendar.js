@@ -1,3 +1,4 @@
+// En el componente Calendar
 import React, { useState } from "react";
 import {
   Box,
@@ -18,6 +19,7 @@ import {
 import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import ReservaModal from "../ReservaModal/reservaModal";
 
 const localizer = momentLocalizer(moment);
 
@@ -36,33 +38,19 @@ const myEventsList = [
   },
 ];
 
-function Calendar() {
+function Calendar({ userData }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [formData, setFormData] = useState({
-    user_name: "",
-    telefono: "",
-    email: "",
-  });
 
   const handleEventClick = (event) => {
     setSelectedDate(event.start);
     setModalOpen(true);
   };
 
-  const handleReservaSubmit = (e) => {
-    e.preventDefault();
-    // Aquí puedes enviar los datos del formulario de reserva al servidor
+  const handleReservaSubmit = (formData) => {
+    // Aquí puedes enviar los datos de la reserva al backend
     console.log("Datos de la reserva:", formData);
     setModalOpen(false); // Cerrar el modal después de enviar
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
   };
 
   return (
@@ -92,50 +80,13 @@ function Calendar() {
           max={new Date().setHours(18, 0, 0)} // Horario máximo: 6 pm
         />
       </div>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Reservar</ModalHeader>
-          <ModalCloseButton />
-          <form onSubmit={handleReservaSubmit}>
-            <ModalBody>
-              <FormControl>
-                <FormLabel>Nombre de Usuario</FormLabel>
-                <Input
-                  placeholder="Nombre de Usuario"
-                  name="user_name"
-                  value={formData.user_name}
-                  onChange={handleInputChange}
-                />
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Teléfono</FormLabel>
-                <Input
-                  placeholder="Teléfono"
-                  name="telefono"
-                  value={formData.telefono}
-                  onChange={handleInputChange}
-                />
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  placeholder="Email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-              </FormControl>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} type="submit">
-                Reservar
-              </Button>
-              <Button onClick={() => setModalOpen(false)}>Cancelar</Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
+      <ReservaModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleReservaSubmit}
+        selectedDate={selectedDate}
+        userData={userData} // Pasa userData al componente ReservaModal
+      />
     </Box>
   );
 }

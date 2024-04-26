@@ -30,7 +30,8 @@ function Login({ onLogin }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: successOpen, onOpen: successOpenModal, onClose: successCloseModal } = useDisclosure();
   const toast = useToast(); // Toast de Chakra UI
-
+ 
+  const Username = {user_name}
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (e) => {
@@ -51,7 +52,7 @@ function Login({ onLogin }) {
       onLogin();
 
       // Redirigir al Dashboard después de iniciar sesión
-      navigate('/dashboard');
+      navigate('/dashboard', { state: { userData: response } });
 
       // Mostrar el toast de bienvenida
       toast({
@@ -155,7 +156,10 @@ function Login({ onLogin }) {
         )}
       </Box>
     </Box>
+
+    
   );
 }
 
 export default Login;
+

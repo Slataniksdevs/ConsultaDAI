@@ -20,14 +20,11 @@ function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes validar los datos del formulario si es necesario
-
-    // Crear el objeto de reserva
     const formData = {
       user_name,
       telefono,
       email,
-      fecha_reserva: selectedDate, // Utilizar la fecha seleccionada del calendario
+      fecha_reserva: selectedDate, 
     };
 
     // Llamar a la función onSubmit pasando los datos del formulario
