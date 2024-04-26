@@ -61,26 +61,68 @@ def create_booking():
 
 
 #MOSTRAR LAS RESERVAS REALIZADAS
+#@booking_bp.route('/booking/list_booking', methods=['GET'])
+# def get_bookings():
+#     conn = connect()
+#     cursor = conn.cursor()
+
+#     cursor.execute("SELECT user_name, fecha_reserva, hora_inicio, hora_termino, telefono, email FROM public.reserva;")
+#     booking_data = cursor.fetchall()
+
+#     cursor.close()
+    
+#     booking_list = []
+#     for booking in booking_data:
+#         booking_dict = {
+#             'user_name': booking[0],
+#             'fecha_reserva': booking[1],
+#             'hora_inicio': booking[2].strftime("%H:%M"),  # Formatea hora de inicio
+#             'hora_termino': booking[3].strftime("%H:%M"),  # Formatea hora de término
+#             'telefono': booking[4],
+#             'email': booking[5]
+#         }
+#         booking_list.append(booking_dict)
+    
+#     return jsonify(booking_list)
+
+
 @booking_bp.route('/booking/list_booking', methods=['GET'])
 def get_bookings():
     conn = connect()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT user_name, fecha_reserva, hora_inicio, hora_termino, telefono, email FROM public.reserva;")
+    cursor.execute("""
+        SELECT
+            c.user_name,
+            c.first_name,
+            c.last_name,
+            c.mail,
+            r.fecha_reserva,
+            c.phone,
+            r.hora_inicio,
+            r.hora_termino
+        FROM
+            cliente c
+        JOIN
+            reserva r ON c.user_name = r.user_name;
+    """)
+
     booking_data = cursor.fetchall()
 
     cursor.close()
-    
+
     booking_list = []
     for booking in booking_data:
         booking_dict = {
             'user_name': booking[0],
-            'fecha_reserva': booking[1],
-            'hora_inicio': booking[2].strftime("%H:%M"),  # Formatea hora de inicio
-            'hora_termino': booking[3].strftime("%H:%M"),  # Formatea hora de término
-            'telefono': booking[4],
-            'email': booking[5]
+            'first_name': booking[1],
+            'last_name': booking[2],
+            'mail': booking[3],
+            'fecha_reserva': booking[4].strftime("%Y-%m-%d"),
+            'phone': booking[5],
+            'hora_inicio': booking[6].strftime("%H:%M"),
+            'hora_termino': booking[7].strftime("%H:%M")
         }
         booking_list.append(booking_dict)
-    
+
     return jsonify(booking_list)
