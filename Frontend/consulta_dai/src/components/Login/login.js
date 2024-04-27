@@ -22,6 +22,7 @@ import backgroundImage from '../../static/Imagenes/Portada_Arbeit_5.jpg';
 
 function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
+  const userName = localStorage.setItem('user_name' , user_name);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -31,7 +32,7 @@ function Login({ onLogin }) {
   const { isOpen: successOpen, onOpen: successOpenModal, onClose: successCloseModal } = useDisclosure();
   const toast = useToast(); // Toast de Chakra UI
  
-  const Username = {user_name}
+ 
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (e) => {
@@ -98,7 +99,7 @@ function Login({ onLogin }) {
           mb="4"
           bg="gray.100"
           _hover={{ bg: 'gray.200' }}
-          value={user_name}
+          value=  {userName}
           onChange={(e) => setUserName(e.target.value)}
         />
         <InputGroup size="md">
