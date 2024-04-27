@@ -28,13 +28,15 @@ function Login({ onLogin }) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: successOpen, onOpen: successOpenModal, onClose: successCloseModal } = useDisclosure();
   const toast = useToast(); // Toast de Chakra UI
 
+<<<<<<< HEAD
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const userName = localStorage.setItem('user_name', user_name)
 
+=======
+>>>>>>> c8c53ce015b025bc610fc0a489574c71330992af
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (e) => {
@@ -48,7 +50,7 @@ function Login({ onLogin }) {
 
     try {
       const response = await userApi.login(user_name, password);
-      const { token, rol, user_name: loggedInUserName } = response; // user_name desde la respuesta
+      const { token, rol } = response; // user_name desde la respuesta
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
       
@@ -67,9 +69,6 @@ function Login({ onLogin }) {
         duration: 5000,
         isClosable: true,
       });
-
-      // Cerrar el modal de éxito
-      successCloseModal();
     } catch (error) {
       setError('Nombre de usuario o contraseña incorrectos');
       onOpen();
@@ -94,7 +93,7 @@ function Login({ onLogin }) {
         borderRadius="lg"
         boxShadow="lg"
       >
-        <Heading mb="8" textAlign="center" fontFamily="serif" fontWeight="bold">
+        <Heading mb="8" textAlign="center" fontFamily="Gotham" fontWeight="bold" color="teal.500">
           Iniciar sesión
         </Heading>
         <Input
@@ -110,7 +109,7 @@ function Login({ onLogin }) {
           <Input
             pr="4.5rem"
             type={show ? 'text' : 'password'}
-            placeholder="Enter password"
+            placeholder="Contraseña"
             variant="filled"
             mb="4"
             bg="gray.100"
@@ -120,7 +119,7 @@ function Login({ onLogin }) {
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? 'Hide' : 'Show'}
+              {show ? 'Ocultar' : 'Mostrar'}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -147,6 +146,7 @@ function Login({ onLogin }) {
             </ModalContent>
           </Modal>
         )}
+<<<<<<< HEAD
         {successOpen && (
           <Modal isOpen={successOpen} onClose={successCloseModal}>
             <ModalOverlay />
@@ -159,6 +159,8 @@ function Login({ onLogin }) {
             </ModalContent>
           </Modal>
         )}
+=======
+>>>>>>> c8c53ce015b025bc610fc0a489574c71330992af
       </Box>
     </Box>
   );
