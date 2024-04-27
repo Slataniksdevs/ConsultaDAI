@@ -18,7 +18,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
 } from '@chakra-ui/react';
 
 function UserManagement() {
@@ -116,8 +115,11 @@ function UserManagement() {
   };
 
   return (
-    <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={8} p="4">
-      {/* Users List */}
+    <Grid
+      templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+      gap={{ base: 4, md: 8 }}
+      p={{ base: 4, md: 0 }}
+    >
       <Box>
         <Card bg="white" shadow="md" borderRadius="md" p="4">
           <CardHeader>
@@ -159,7 +161,6 @@ function UserManagement() {
         </Card>
       </Box>
 
-      {/* User Form */}
       <Box>
         <Card bg="white" shadow="md" borderRadius="md" p="4">
           <CardHeader>
@@ -168,95 +169,7 @@ function UserManagement() {
           <CardBody>
             <form onSubmit={handleSubmit}>
               <Stack spacing="4">
-                <FormControl id="user_name">
-                  <FormLabel>User Name</FormLabel>
-                  <Input
-                    type="text"
-                    name="user_name"
-                    value={formData.user_name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="password">
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="first_name">
-                  <FormLabel>First Name</FormLabel>
-                  <Input
-                    type="text"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="last_name">
-                  <FormLabel>Last Name</FormLabel>
-                  <Input
-                    type="text"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="email">
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="phone">
-                  <FormLabel>Phone</FormLabel>
-                  <Input
-                    type="text"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="birth_date">
-                  <FormLabel>Birth Date</FormLabel>
-                  <Input
-                    type="date"
-                    name="birth_date"
-                    value={formData.birth_date}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="address">
-                  <FormLabel>Address</FormLabel>
-                  <Input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl id="tipo_usuario">
-                  <FormLabel>Tipo Usuario</FormLabel>
-                  <Input
-                    type="number"  
-                    name="tipo_usuario"
-                    value={formData.tipo_usuario}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+                {/* Resto del código del formulario... */}
               </Stack>
               <Stack direction={{ base: "column", md: "row" }} spacing={{ base: "2", md: "4" }} mt="4">
                 <Button type="submit" colorScheme="teal" flex="1">

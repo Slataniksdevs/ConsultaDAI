@@ -17,22 +17,24 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { useMediaQuery } from 'react-responsive';
 import userApi from '../../api/userApi';
 import backgroundImage from '../../static/Imagenes/Portada_Arbeit_5.jpg';
 
 function Login({ onLogin }) {
   const [user_name, setUserName] = useState('');
-  const userName = localStorage.setItem('user_name' , user_name);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: successOpen, onOpen: successOpenModal, onClose: successCloseModal } = useDisclosure();
   const toast = useToast(); // Toast de Chakra UI
- 
- 
+
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
+  const userName = localStorage.setItem('user_name', user_name)
+
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (e) => {
@@ -42,12 +44,14 @@ function Login({ onLogin }) {
       onOpen();
       return;
     }
+  
 
     try {
       const response = await userApi.login(user_name, password);
       const { token, rol, user_name: loggedInUserName } = response; // user_name desde la respuesta
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
+      
 
       // Llamar a la función de autenticación del padre
       onLogin();
@@ -82,11 +86,11 @@ function Login({ onLogin }) {
       backgroundImage={`url(${backgroundImage})`}
     >
       <Box
-        maxW="md"
+        maxW={isMobile ? "90%" : "md"}
         w="full"
         bg="white"
         py="8"
-        px="10"
+        px={isMobile ? "4" : "10"}
         borderRadius="lg"
         boxShadow="lg"
       >
@@ -99,7 +103,7 @@ function Login({ onLogin }) {
           mb="4"
           bg="gray.100"
           _hover={{ bg: 'gray.200' }}
-          value=  {userName}
+          value={user_name}
           onChange={(e) => setUserName(e.target.value)}
         />
         <InputGroup size="md">
@@ -143,7 +147,7 @@ function Login({ onLogin }) {
             </ModalContent>
           </Modal>
         )}
-        {success && (
+        {successOpen && (
           <Modal isOpen={successOpen} onClose={successCloseModal}>
             <ModalOverlay />
             <ModalContent>
@@ -157,10 +161,7 @@ function Login({ onLogin }) {
         )}
       </Box>
     </Box>
-
-    
   );
 }
 
 export default Login;
-

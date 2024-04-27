@@ -12,6 +12,7 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
+import bookingManagment from '../../api/bookingManagment';
 
 function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
   const [user_name, setUserName] = useState("");
@@ -53,7 +54,7 @@ function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
                 onChange={(e) => setUserName(e.target.value)}
               />
             </FormControl>
-            <FormControl>
+            <FormControl mt={4}>
               <FormLabel>Nombre Usuario</FormLabel>
               <Input
                 placeholder="Nombre de Usuario"
