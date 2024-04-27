@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// ReservaModal.js
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -13,26 +14,31 @@ import {
   Input,
 } from "@chakra-ui/react";
 
-function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
-  const [user_name, setUserName] = useState("");
-  const userName = localStorage.getItem('user_name' , user_name);
+function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate }) {
+  const [userName, setUserName] = useState(""); // Inicializamos userName vacío
   const [telefono, setTelefono] = useState("");
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    // Obtener el nombre de usuario del localStorage al cargar el componente
+    const storedUserName = localStorage.getItem("user_name");
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+  }, []); // El efecto se ejecuta solo una vez al cargar el componente
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      user_name,
+      userName,
       telefono,
       email,
-      fecha_reserva: selectedDate, 
     };
 
-    // Llamar a la función onSubmit pasando los datos del formulario
-    onSubmit(formData);
+    // Llamar a la función onAddEvent pasando los datos del formulario y la fecha seleccionada
+    onAddEvent(formData, selectedDate);
 
     // Limpiar los campos del formulario después de enviar
-    setUserName("");
     setTelefono("");
     setEmail("");
   };
@@ -50,19 +56,10 @@ function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
               <Input
                 placeholder="Username"
                 value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                readOnly // Hacer el campo de nombre de usuario no editable
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Nombre Usuario</FormLabel>
-              <Input
-                placeholder="Nombre de Usuario"
-                value=''
-                onChange={(e) => setUserName(e.target.value)}
-                disable
-              />
-            </FormControl>
-            <FormControl mt={4}>
               <FormLabel>Teléfono</FormLabel>
               <Input
                 placeholder="Teléfono"
@@ -70,7 +67,7 @@ function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
                 onChange={(e) => setTelefono(e.target.value)}
               />
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl>
               <FormLabel>Email</FormLabel>
               <Input
                 placeholder="Email"

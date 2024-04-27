@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar/navbar';
-import Footer from './components/Footer/footer';
+import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 import Login from './components/Login/login';
 import Dashboard from './components/Dashboard/dashboard';
 import { ChakraProvider } from '@chakra-ui/react';
