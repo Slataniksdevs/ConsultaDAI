@@ -22,11 +22,14 @@ function Calendar({ userData }) {
   const [myEventsList, setMyEventsList] = useState([]);
 
   const handleAddEvent = (formData, selectedDate) => {
+    // Crear un nuevo evento con la fecha seleccionada y ajustar la hora según sea necesario
     const newEvent = {
       title: formData.userName,
       start: selectedDate,
-      end: selectedDate,
+      end: moment(selectedDate).add(1, 'hour').toDate(), // Ajusta la duración del evento según tu necesidad
     };
+
+    console.log("Nuevo evento:", newEvent); // Agregar console log para ver los campos del evento
 
     setMyEventsList([...myEventsList, newEvent]);
     setModalOpen(false);

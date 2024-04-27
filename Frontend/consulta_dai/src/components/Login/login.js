@@ -16,8 +16,8 @@ import {
   ModalCloseButton,
   useDisclosure,
   useToast,
+  useMediaQuery,
 } from '@chakra-ui/react';
-import { useMediaQuery } from 'react-responsive';
 import userApi from '../../api/userApi';
 import backgroundImage from '../../static/Imagenes/Portada_Arbeit_5.jpg';
 
@@ -28,15 +28,9 @@ function Login({ onLogin }) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast(); // Toast de Chakra UI
-
-<<<<<<< HEAD
+  const toast = useToast();
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
-  const userName = localStorage.setItem('user_name', user_name)
-
-=======
->>>>>>> c8c53ce015b025bc610fc0a489574c71330992af
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (e) => {
@@ -47,21 +41,16 @@ function Login({ onLogin }) {
       return;
     }
   
-
     try {
       const response = await userApi.login(user_name, password);
-      const { token, rol } = response; // user_name desde la respuesta
+      const { token, rol } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('rol', rol);
-      
 
-      // Llamar a la función de autenticación del padre
       onLogin();
 
-      // Redirigir al Dashboard después de iniciar sesión
       navigate('/dashboard', { state: { userData: response } });
 
-      // Mostrar el toast de bienvenida
       toast({
         title: `Bienvenido, ${user_name}!`,
         description: 'Has iniciado sesión correctamente.',
@@ -85,11 +74,11 @@ function Login({ onLogin }) {
       backgroundImage={`url(${backgroundImage})`}
     >
       <Box
-        maxW={isMobile ? "90%" : "md"}
-        w="full"
+        maxW={isMobile ? "80%" : "md"}  // Ajuste del ancho del formulario según el tamaño de la pantalla
+        w="auto"
         bg="white"
         py="8"
-        px={isMobile ? "4" : "10"}
+        px={isMobile ? "4" : "10"} // Ajuste del padding según el tamaño de la pantalla
         borderRadius="lg"
         boxShadow="lg"
       >
@@ -146,21 +135,6 @@ function Login({ onLogin }) {
             </ModalContent>
           </Modal>
         )}
-<<<<<<< HEAD
-        {successOpen && (
-          <Modal isOpen={successOpen} onClose={successCloseModal}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Inicio de Sesión Exitoso</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Text color="green.500">¡Bienvenido! Has iniciado sesión correctamente.</Text>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        )}
-=======
->>>>>>> c8c53ce015b025bc610fc0a489574c71330992af
       </Box>
     </Box>
   );

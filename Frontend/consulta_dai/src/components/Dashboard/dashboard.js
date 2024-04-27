@@ -40,18 +40,18 @@ function Sidebar({ rol, setView }) {
 
   return (
     <VStack
-    bg="gray.700" // Color claro para el fondo
-    h="auto"
-    w={{ base: isOpen ? "250px" : "60px", md: "250px" }}
-    transition="width 0.3s"
-    alignItems="flex-start"
-    py="4"
-    px="2"
-    borderRightWidth="10px" // Borde solo en el lado derecho
-    borderRightColor="black" // Borde negro para definición
-    position={{ base: "fixed", md: "relative" }}
-    zIndex="999"
-  >
+      bg="gray.700" // Color claro para el fondo
+      h="100vh"
+      w={{ base: isOpen ? "250px" : "60px", md: "250px" }}
+      transition="width 0.3s"
+      alignItems="flex-start"
+      py="4"
+      px="2"
+      borderRightWidth="10px" // Borde solo en el lado derecho
+      borderRightColor="black" // Borde negro para definición
+      position={{ base: "fixed", md: "relative" }}
+      zIndex="999"
+    >
       <Box display={{ base: "block", md: "none" }} onClick={onToggle} cursor="pointer">
         {isOpen ? (
           <ArrowLeftIcon color="red.500" />
