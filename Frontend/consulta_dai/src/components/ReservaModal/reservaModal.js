@@ -50,6 +50,7 @@ function ReservaModal({ isOpen, onClose, onSubmit, selectedDate }) {
                 placeholder="Nombre de Usuario"
                 value={user_name}
                 onChange={(e) => setUserName(e.target.value)}
+                disable
               />
             </FormControl>
             <FormControl mt={4}>
