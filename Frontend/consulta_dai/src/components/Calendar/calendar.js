@@ -20,6 +20,7 @@ function Calendar({ userData }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [myEventsList, setMyEventsList] = useState([]);
+  const [newEvent, setNewEvent] = useState();
 
   const handleAddEvent = (formData, selectedDate) => {
     // Crear un nuevo evento con la fecha seleccionada y ajustar la hora según sea necesario
@@ -30,7 +31,7 @@ function Calendar({ userData }) {
     };
 
     console.log("Nuevo evento:", newEvent); // Agregar console log para ver los campos del evento
-
+    setNewEvent(newEvent)
     setMyEventsList([...myEventsList, newEvent]);
     setModalOpen(false);
   };
@@ -124,6 +125,7 @@ function Calendar({ userData }) {
         onAddEvent={handleAddEvent}
         selectedDate={selectedDate}
         userData={userData}
+        date = {newEvent}
       />
     </Box>
   );

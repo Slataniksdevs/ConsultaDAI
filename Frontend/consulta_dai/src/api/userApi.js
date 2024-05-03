@@ -22,6 +22,7 @@ const userApi = {
         // Almacena el token JWT y el rol en el almacenamiento local
         localStorage.setItem('token', token);
         localStorage.setItem('rol', rol);
+        localStorage.setItem('user_name', user_name);
 
         // Devuelve el token JWT y el rol del usuario
         return { token, rol };

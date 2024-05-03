@@ -13,9 +13,10 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
+import axios from 'axios';
 import bookingManagment from '../../api/bookingManagment';
 
-function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate }) {
+function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate, date }) {
   const [userName, setUserName] = useState(""); // Inicializamos userName vacío
   const [telefono, setTelefono] = useState("");
   const [email, setEmail] = useState("");
@@ -28,9 +29,17 @@ function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate }) {
     }
   }, []); // El efecto se ejecuta solo una vez al cargar el componente
 
-  const handleSubmit = (e) => {
+  function formatDate(date) {
+    return date.toISOString().split('T')[0]; // Obtiene solo la parte de la fecha en formato 'YYYY-MM-DD'
+  }
+  
+  function formatTime(time) {
+    return time.toISOString().split('T')[1].split('.')[0]; // Obtiene solo la parte de la hora en formato 'HH:MM:SS'
+  }
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = {
+    let formData = {
       userName,
       telefono,
       email,
@@ -42,7 +51,35 @@ function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate }) {
     // Limpiar los campos del formulario después de enviar
     setTelefono("");
     setEmail("");
+
+    formData = {
+      user_name: userName,
+      fecha_reserva: formatDate(selectedDate), // Formatea la fecha
+      hora_inicio: formatTime(date.start), // Formatea la hora de inicio
+      hora_termino: formatTime(date.end), // Formatea la hora de termino
+      telefono: telefono,
+      email: email
+    };
+    
+    const token = localStorage.getItem("token");
+    
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    e.preventDefault();
+    try {
+      await axios.post(`http://localhost:5000/reserva/servicio`, formData, config);
+    } catch (error) {
+      console.error("nuevo error: ", error);
+    }
+
+
   };
+
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -60,7 +97,7 @@ function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate }) {
                 readOnly // Hacer el campo de nombre de usuario no editable
               />
             </FormControl>
-            
+
             <FormControl mt={4}>
               <FormLabel>Teléfono</FormLabel>
               <Input
