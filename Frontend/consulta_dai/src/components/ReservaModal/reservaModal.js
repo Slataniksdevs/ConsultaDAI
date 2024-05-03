@@ -1,5 +1,6 @@
 // ReservaModal.js
 import React, { useState, useEffect } from "react";
+
 import {
   Modal,
   ModalOverlay,
@@ -71,15 +72,11 @@ function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate, date }) {
     
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/reserva/servicio`, formData, config);
+      await axios.post(`http://127.0.0.1:5000/reserva/servicio`, formData, config);
     } catch (error) {
       console.error("nuevo error: ", error);
     }
-
-
   };
-
-
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
