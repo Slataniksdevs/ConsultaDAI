@@ -22,21 +22,15 @@ import userApi from '../../api/userApi';
 import backgroundImage from '../../static/Imagenes/Portada_Arbeit_5.jpg';
 
 function Login({ onLogin }) {
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const [user_name, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast(); // Toast de Chakra UI
+  const toast = useToast(); 
 
-<<<<<<< HEAD
-  const isMobile = useMediaQuery({ maxWidth: 768 });
-
-  const userName = localStorage.setItem('user_name', user_name)
-
-=======
->>>>>>> c8c53ce015b025bc610fc0a489574c71330992af
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (e) => {
@@ -146,21 +140,6 @@ function Login({ onLogin }) {
             </ModalContent>
           </Modal>
         )}
-<<<<<<< HEAD
-        {successOpen && (
-          <Modal isOpen={successOpen} onClose={successCloseModal}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Inicio de Sesión Exitoso</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Text color="green.500">¡Bienvenido! Has iniciado sesión correctamente.</Text>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        )}
-=======
->>>>>>> c8c53ce015b025bc610fc0a489574c71330992af
       </Box>
     </Box>
   );

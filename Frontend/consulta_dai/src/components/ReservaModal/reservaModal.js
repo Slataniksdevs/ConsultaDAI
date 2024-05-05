@@ -60,19 +60,7 @@ function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate }) {
                 readOnly // Hacer el campo de nombre de usuario no editable
               />
             </FormControl>
-<<<<<<< HEAD
-            <FormControl mt={4}>
-              <FormLabel>Nombre Usuario</FormLabel>
-              <Input
-                placeholder="Nombre de Usuario"
-                value=''
-                onChange={(e) => setUserName(e.target.value)}
-              />
-            </FormControl>
-            <FormControl mt={4}>
-=======
             <FormControl>
->>>>>>> c8c53ce015b025bc610fc0a489574c71330992af
               <FormLabel>Teléfono</FormLabel>
               <Input
                 placeholder="Teléfono"
