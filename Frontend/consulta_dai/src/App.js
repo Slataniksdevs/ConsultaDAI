@@ -23,7 +23,7 @@ function App() {
     <ChakraProvider>
       <Router>
         <div className="App">
-          
+          <Navbar/>
           <Routes>
             {/* Ruta para el login */}
             <Route
