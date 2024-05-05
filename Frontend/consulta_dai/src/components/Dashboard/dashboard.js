@@ -21,7 +21,9 @@ import { ArrowRightIcon, ArrowLeftIcon, AddIcon, CalendarIcon, EmailIcon, Warnin
 import Calendar from '../Calendar/calendar';
 import UserManagement from '../UserManagment/userManagment';
 import ReservaModal from "../ReservaModal/reservaModal";
+import BookingManagment from "../BookingManagment/bookingManagment";
 import backgroundImage from '../../static/Imagenes/jacques-lacan-3.jpg';
+
 
 function Sidebar({ rol, setView }) {
   const { isOpen, onToggle } = useDisclosure();
@@ -136,7 +138,7 @@ function Sidebar({ rol, setView }) {
                       align="center"
                       cursor="pointer"
                       mb="2"
-                      onClick={() => setView('reservations')}
+                      onClick={() => setView('bookings')}
                       _hover={{ bg: "gray.800" }}
                       borderRadius="lg"
                       p="2"
@@ -190,19 +192,20 @@ function Dashboard() {
 
   return (
     <ChakraProvider>
-      
       <Flex bg="gray.700" // Color claro para el fondo
       hv=""
       borderWidth="10px" // Bordes más gruesos
       borderColor="black" // Borde negro para definición
-      borderRadius="lg" // Bordes menos redondead
+      borderRadius="lg" // Bordes menos redondeados
       position={{ base: "fixed", md: "relative" }}
       zIndex="999">
         <Sidebar rol={rol} setView={setView} />
         {view === 'calendar' ? (
           <Calendar userData={userData} onAddEvent={handleAddEvent} />
-        ) : (
+        ) : view === 'users' ? (
           <UserManagement />
+        ) : (
+          <BookingManagment />
         )}
         <ReservaModal
           isOpen={modalOpen}

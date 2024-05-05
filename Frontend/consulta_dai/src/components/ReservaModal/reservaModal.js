@@ -13,7 +13,7 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import bookingManagment from '../../api/bookingManagment';
+
 
 function ReservaModal({ isOpen, onClose, onAddEvent, selectedDate }) {
   const [userName, setUserName] = useState(""); // Inicializamos userName vacío

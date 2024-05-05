@@ -1,6 +1,22 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:5000'; 
+const BASE_URL = 'http://127.0.0.1:5000';
+
+// Configura el interceptor para agregar el token JWT a todas las solicitudes
+axios.interceptors.request.use(
+  config => {
+    // Obtiene el token JWT del almacenamiento local
+    const token = localStorage.getItem('token');
+    // Verifica si el token existe y agrega el encabezado de autorización a la solicitud
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 const userApi = {
   login: async (user_name, password) => {

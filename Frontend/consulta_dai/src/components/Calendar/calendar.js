@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Importar Axios
 import {
   Box,
   Text,
@@ -8,7 +9,6 @@ import moment from "moment";
 import "moment/locale/es"; // Importar el idioma español de moment
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReservaModal from "../ReservaModal/reservaModal";
-
 // Importar la imagen de fondo
 import backgroundImage from "../../static/Imagenes/Portada_Arbeit_1.png";
 
@@ -16,22 +16,53 @@ import backgroundImage from "../../static/Imagenes/Portada_Arbeit_1.png";
 moment.locale("es");
 const localizer = momentLocalizer(moment);
 
+
 function Calendar({ userData }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [myEventsList, setMyEventsList] = useState([]);
+  const [newEvent, setNewEvent] = useState();
+
+  useEffect(() => {
+    // Obtener el token de autorización del localStorage
+    const token = localStorage.getItem('token');
+  
+    // Configurar las opciones de la solicitud HTTP, incluyendo el token de autorización
+    const config = {
+      headers: {
+        'Authorization': token
+      }
+    };
+  
+    // Hacer una solicitud para obtener las reservas del backend al montar el componente
+    axios.get("http://127.0.0.1:5000/booking/list_all_bookings", config) // Utilizar axios para hacer la solicitud GET
+      .then((response) => {
+        console.log("Datos de la base de datos:", response.data); // Agregar console.log para ver los datos de la base de datos
+        // Convertir el formato de las reservas para que sea compatible con el calendario
+        const events = response.data.map((reservation) => ({
+          title: reservation.user_name,
+          start: new Date(reservation.fecha_reserva + "T" + reservation.hora_inicio),
+          end: new Date(reservation.fecha_reserva + "T" + reservation.hora_termino),
+        }));
+        setMyEventsList(events);
+        console.log(events);
+      })
+      .catch((error) => console.error("Error fetching events:", error));
+  }, []); 
 
   const handleAddEvent = (formData, selectedDate) => {
+    // Crear un nuevo evento con la fecha seleccionada y ajustar la hora según sea necesario
     const newEvent = {
       title: formData.userName,
       start: selectedDate,
-      end: selectedDate,
+      end: moment(selectedDate).add(1, 'hour').toDate(), // Ajusta la duración del evento según tu necesidad
     };
 
+    console.log("Nuevo evento:", newEvent); // Agregar console log para ver los campos del evento
+    setNewEvent(newEvent)
     setMyEventsList([...myEventsList, newEvent]);
     setModalOpen(false);
   };
-
   const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
       backgroundColor: "#71DBD4",
@@ -46,7 +77,6 @@ function Calendar({ userData }) {
     };
     return { style };
   };
-
   const EventComponent = ({ event }) => {
     return (
       <div>
@@ -54,7 +84,6 @@ function Calendar({ userData }) {
       </div>
     );
   };
-
   // Estilo para el calendario con la imagen de fondo
   const calendarStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -121,6 +150,7 @@ function Calendar({ userData }) {
         onAddEvent={handleAddEvent}
         selectedDate={selectedDate}
         userData={userData}
+        date = {newEvent}
       />
     </Box>
   );
